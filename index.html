@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pedison USA Platform</title>
+<style>
+  :root{
+    --navy:#1E7145;       /* primary brand GREEN (chrome, primary buttons) */
+    --navy-dark:#154F31;  /* dark green (nav bg, hover) */
+    --blue:#1F6FA8;       /* brand BLUE (secondary actions, info) */
+    --blue-light:#DCEAF3;
+    --orange:#E07B26;     /* brand ORANGE (accents, active states, warnings) */
+    --orange-light:#FBE7D2;
+    --ltblue:#DCEFE3;     /* light green-tint alt background */
+    --alt:#F1F8F3;
+    --red:#D64545;
+    --grey:#555555;
+    --border:#cfe0d3;
+    --white:#ffffff;
+    --green:#1E7145;
+    --amber:#E07B26;
+    --purple:#1F6FA8;
+    --pink:#1F6FA8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:Verdana, Arial, sans-serif;
+    background:var(--alt);
+    color:#1a1a1a;
+    font-size:13px;
+  }
+  a{color:var(--navy);}
+
+  header{
+    background:var(--navy);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 18px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  header .brand{ display:flex; align-items:baseline; gap:10px; }
+  header .brand h1{ font-size:16px; margin:0; letter-spacing:.3px; font-weight:bold; }
+  header .brand span.tag{ font-size:10px; color:var(--ltblue); text-transform:uppercase; letter-spacing:1px; }
+  #orgSelect{ background:var(--navy-dark); color:#fff; border:1px solid #33628f; padding:5px 8px; font-family:inherit; font-size:12px; border-radius:3px; }
+
+  nav{ background:var(--navy-dark); display:flex; gap:2px; padding:0 14px; flex-wrap:wrap; }
+  nav button{ background:transparent; border:none; color:#cdddf2; padding:9px 14px; font-family:inherit; font-size:12px; cursor:pointer; border-bottom:3px solid transparent; }
+  nav button:hover{ color:#fff; }
+  nav button.active{ color:#fff; border-bottom:3px solid var(--orange); font-weight:bold; }
+
+  main{ padding:16px; max-width:1500px; margin:0 auto; }
+
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+  .panel-head h2{ margin:0; color:var(--navy); font-size:16px; }
+  .panel-head .sub{ color:var(--grey); font-size:11px; margin-top:2px; }
+  .toolbar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  input[type=text], input[type=search], input[type=number], input[type=date], input[type=email], select, textarea{
+    font-family:inherit; font-size:12px; padding:6px 8px; border:1px solid var(--border); border-radius:3px; background:#fff;
+  }
+  input[type=search]{ min-width:180px; }
+
+  button.btn{ background:var(--navy); color:#fff; border:none; padding:7px 14px; border-radius:3px; font-family:inherit; font-size:12px; cursor:pointer; }
+  button.btn:hover{ background:var(--navy-dark); }
+  button.btn.secondary{ background:#fff; color:var(--blue); border:1px solid var(--blue); }
+  button.btn.secondary:hover{ background:var(--blue-light); }
+  button.btn.danger{ background:#fff; color:var(--red); border:1px solid var(--red); }
+  button.btn.danger:hover{ background:#fdeaea; }
+  button.btn.accent{ background:var(--orange); color:#fff; }
+  button.btn.accent:hover{ background:#c4671d; }
+  button.btn.small{ padding:4px 9px; font-size:11px; }
+
+  /* view switch (Monday-style tab pills) */
+  .view-switch{ display:flex; background:#fff; border:1px solid var(--border); border-radius:4px; overflow:hidden; }
+  .view-switch button{ background:#fff; border:none; padding:6px 12px; font-size:11px; font-family:inherit; cursor:pointer; color:var(--navy); border-right:1px solid var(--border); }
+  .view-switch button:last-child{ border-right:none; }
+  .view-switch button.active{ background:var(--navy); color:#fff; font-weight:bold; }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:12px; margin-bottom:18px; }
+  .card{ background:#fff; border:1px solid var(--border); border-left:4px solid var(--navy); border-radius:4px; padding:12px 14px; }
+  .card .label{ font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--grey); }
+  .card .value{ font-size:22px; font-weight:bold; color:var(--navy); margin-top:4px; }
+  .card .foot{ font-size:11px; color:var(--grey); margin-top:2px; }
+
+  .grid2{ display:grid; grid-template-columns:1.3fr 1fr; gap:14px; }
+  @media (max-width:900px){ .grid2{ grid-template-columns:1fr; } }
+
+  .box{ background:#fff; border:1px solid var(--border); border-radius:4px; padding:12px 14px; }
+  .box h3{ margin:0 0 8px 0; color:var(--navy); font-size:13px; border-bottom:1px solid var(--ltblue); padding-bottom:6px; }
+
+  .bar-row{ display:flex; align-items:center; gap:8px; margin-bottom:6px; font-size:11px; }
+  .bar-row .bar-label{ width:150px; flex-shrink:0; color:var(--grey); }
+  .bar-track{ flex:1; background:var(--alt); border-radius:3px; height:14px; overflow:hidden; }
+  .bar-fill{ background:var(--navy); height:100%; }
+  .bar-row .bar-count{ width:26px; text-align:right; font-weight:bold; color:var(--navy); }
+
+  table{ width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--border); }
+  thead th{ background:var(--ltblue); color:var(--navy); text-align:left; padding:8px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); }
+  tbody td{ padding:8px 10px; border-bottom:1px solid #eef0f4; font-size:12px; vertical-align:top; }
+  tbody tr:hover{ background:var(--alt); }
+  .empty-row td{ text-align:center; color:var(--grey); padding:26px; font-style:italic; }
+
+  .pill{ display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:bold; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap; cursor:default; border:none; font-family:inherit; }
+  .pill.grey{ background:#e7e7e7; color:#555; }
+  .pill.blue{ background:var(--blue-light); color:var(--blue); }
+  .pill.green{ background:#dff3e6; color:var(--green); }
+  .pill.red{ background:#fbdcdc; color:var(--red); }
+  .pill.amber{ background:var(--orange-light); color:var(--orange); }
+  .pill.purple{ background:var(--blue-light); color:var(--blue); }
+  .pill.pink{ background:var(--blue-light); color:var(--blue); }
+  .pill.clickable{ cursor:pointer; }
+  .pill.clickable:hover{ outline:2px solid rgba(31,78,121,.35); }
+
+  /* status dropdown popover for inline editing */
+  .status-pop{ position:absolute; z-index:80; background:#fff; border:1px solid var(--border); border-radius:4px; box-shadow:0 6px 18px rgba(0,0,0,.18); padding:5px; min-width:150px; }
+  .status-pop .opt{ padding:5px 8px; font-size:11px; cursor:pointer; border-radius:3px; margin-bottom:2px; }
+  .status-pop .opt:hover{ background:var(--alt); }
+
+  .row-actions{ display:flex; gap:6px; }
+  .link-btn{ background:none; border:none; color:var(--navy); cursor:pointer; font-size:11px; padding:0; text-decoration:underline; }
+  .link-btn.red{ color:var(--red); }
+
+  .avatar{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--navy); color:#fff; font-size:9px; font-weight:bold; margin-right:5px; vertical-align:middle; }
+
+  /* ---------- Kanban ---------- */
+  .kanban{ display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; }
+  .kcol{ background:#fff; border:1px solid var(--border); border-radius:4px; min-width:220px; flex-shrink:0; }
+  .kcol-head{ color:#fff; padding:8px 10px; font-size:11px; font-weight:bold; border-radius:4px 4px 0 0; display:flex; justify-content:space-between; }
+  .kcol-body{ padding:8px; min-height:60px; display:flex; flex-direction:column; gap:8px; max-height:560px; overflow-y:auto; }
+  .kcard{ background:var(--alt); border:1px solid var(--border); border-left:3px solid var(--navy); border-radius:3px; padding:8px; font-size:11px; cursor:pointer; }
+  .kcard:hover{ border-left-color:var(--orange); background:#fff; }
+  .kcard .kc-num{ font-weight:bold; color:var(--navy); }
+  .kcard .kc-amt{ color:var(--green); font-weight:bold; margin-top:2px; }
+  .kcard .kc-org{ color:var(--grey); font-size:10px; margin-top:4px; }
+
+  /* ---------- Grouped board (Monday-style) ---------- */
+  .group-block{ margin-bottom:14px; border:1px solid var(--border); border-radius:4px; overflow:hidden; background:#fff; }
+  .group-title-row{ display:flex; align-items:center; justify-content:space-between; padding:8px 12px; cursor:pointer; color:#fff; }
+  .group-title-row .gt-left{ display:flex; align-items:center; gap:8px; font-weight:bold; font-size:12px; }
+  .group-title-row .gt-caret{ display:inline-block; transition:transform .15s; }
+  .group-title-row.collapsed .gt-caret{ transform:rotate(-90deg); }
+  .group-progress-wrap{ display:flex; align-items:center; gap:8px; font-size:10px; }
+  .group-progress-track{ width:110px; background:rgba(255,255,255,.35); border-radius:3px; height:8px; overflow:hidden; }
+  .group-progress-fill{ background:#fff; height:100%; }
+  .group-body table{ border:none; }
+  .group-body.hidden{ display:none; }
+
+  /* ---------- Timeline / Gantt ---------- */
+  .timeline-wrap{ background:#fff; border:1px solid var(--border); border-radius:4px; padding:14px; overflow-x:auto; }
+  .tl-row{ display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:11px; }
+  .tl-label{ width:220px; flex-shrink:0; }
+  .tl-label .tl-num{ font-weight:bold; color:var(--navy); }
+  .tl-label .tl-sub{ color:var(--grey); font-size:10px; }
+  .tl-track{ position:relative; flex:1; height:20px; background:var(--alt); border-radius:3px; min-width:400px; }
+  .tl-bar{ position:absolute; top:2px; height:16px; border-radius:3px; }
+  .tl-axis{ display:flex; margin-left:230px; font-size:9px; color:var(--grey); border-top:1px dashed var(--border); padding-top:4px; margin-top:6px; }
+
+  /* ---------- Modal ---------- */
+  .overlay{ position:fixed; inset:0; background:rgba(20,30,45,.55); display:none; align-items:flex-start; justify-content:center; padding:40px 14px; overflow-y:auto; z-index:50; }
+  .overlay.show{ display:flex; }
+  .modal{ background:#fff; border-radius:5px; width:100%; max-width:640px; box-shadow:0 10px 40px rgba(0,0,0,.3); }
+  .modal-head{ background:var(--navy); color:#fff; padding:12px 16px; border-radius:5px 5px 0 0; display:flex; justify-content:space-between; align-items:center; }
+  .modal-head h3{ margin:0; font-size:14px; }
+  .modal-head button{ background:none; border:none; color:#fff; font-size:16px; cursor:pointer; }
+  .modal-body{ padding:14px 16px; max-height:65vh; overflow-y:auto; }
+  .modal-foot{ padding:12px 16px; border-top:1px solid #eee; display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+  .field{ margin-bottom:10px; }
+  .field label{ display:block; font-size:11px; color:var(--grey); margin-bottom:3px; font-weight:bold; }
+  .field input, .field select, .field textarea{ width:100%; }
+  .field textarea{ min-height:60px; resize:vertical; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+  .detail-section{ margin-bottom:14px; }
+  .detail-section h4{ margin:0 0 6px 0; color:var(--navy); font-size:12px; border-bottom:1px solid var(--ltblue); padding-bottom:4px; }
+  .kv{ display:grid; grid-template-columns:120px 1fr; gap:4px 8px; font-size:12px; margin-bottom:2px;}
+  .kv .k{ color:var(--grey); }
+  .activity-item{ font-size:11px; padding:6px 0; border-bottom:1px dashed #eee; }
+  .activity-item .ts{ color:var(--grey); font-size:10px; }
+  .stage-btns{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+
+  /* updates / comments thread */
+  .update-item{ background:var(--alt); border-radius:4px; padding:7px 9px; margin-bottom:7px; font-size:11px; }
+  .update-item .u-head{ display:flex; justify-content:space-between; color:var(--grey); font-size:10px; margin-bottom:3px; }
+  .update-compose{ display:flex; gap:6px; margin-top:8px; }
+  .update-compose textarea{ flex:1; min-height:40px; }
+
+  /* automations */
+  .automation-row{ background:#fff; border:1px solid var(--border); border-radius:4px; padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .automation-desc{ font-size:12px; }
+  .automation-desc b{ color:var(--navy); }
+  .automation-toggle{ display:flex; align-items:center; gap:6px; font-size:11px; }
+  .automation-flow{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:var(--alt); border:1px dashed var(--border); border-radius:4px; padding:10px; margin-bottom:10px; font-size:11px; }
+  .automation-flow select, .automation-flow input{ font-size:11px; padding:5px 6px; }
+  .automation-chip{ background:var(--navy); color:#fff; padding:4px 9px; border-radius:10px; font-size:10px; }
+
+  /* ---------- Call status color code ---------- */
+  .call-status-dot{ display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:7px; vertical-align:middle; flex-shrink:0; }
+  .call-status-legend{ display:flex; gap:16px; flex-wrap:wrap; background:#fff; border:1px solid var(--border); border-radius:4px; padding:9px 14px; margin-bottom:10px; font-size:11px; }
+  .cs-legend-item{ display:flex; align-items:center; color:var(--grey); }
+
+  /* ---------- Calendar / callback buckets ---------- */
+  .cal-bucket{ margin-bottom:14px; border:1px solid var(--border); border-radius:4px; overflow:hidden; background:#fff; }
+  .cal-bucket-head{ color:#fff; padding:8px 12px; font-weight:bold; font-size:12px; }
+  .cal-row{ display:flex; align-items:center; gap:10px; padding:8px 12px; border-bottom:1px solid #eef0f4; font-size:12px; cursor:pointer; }
+  .cal-row:last-child{ border-bottom:none; }
+  .cal-row:hover{ background:var(--alt); }
+  .cal-row .cal-date{ width:80px; flex-shrink:0; color:var(--grey); font-size:11px; }
+  .cal-row .cal-title{ flex:1; font-weight:bold; }
+  .cal-row .cal-meta{ color:var(--grey); font-size:11px; }
+
+  /* ---------- Leaderboard / KPI ---------- */
+  .lb-row{ display:flex; align-items:center; gap:10px; padding:8px 6px; border-bottom:1px solid #eef0f4; }
+  .lb-rank{ width:26px; text-align:center; font-weight:bold; color:var(--grey); font-size:13px; }
+  .lb-rank.medal-1{ color:#c9971f; font-size:17px; }
+  .lb-rank.medal-2{ color:#8a97a3; font-size:16px; }
+  .lb-rank.medal-3{ color:#b56a35; font-size:15px; }
+  .lb-name{ width:130px; flex-shrink:0; font-weight:bold; font-size:12px; }
+  .lb-track{ flex:1; background:var(--alt); border-radius:3px; height:16px; overflow:hidden; }
+  .lb-fill{ height:100%; background:var(--orange); }
+  .lb-value{ width:90px; text-align:right; font-size:11px; font-weight:bold; color:var(--navy); }
+  .kpi-select{ margin-left:auto; }
+
+  .call-stats-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .call-stat-chip{ background:var(--alt); border:1px solid var(--border); border-radius:4px; padding:6px 10px; font-size:11px; text-align:center; min-width:64px; }
+  .call-stat-chip .csc-num{ font-size:16px; font-weight:bold; color:var(--navy); }
+  .call-stat-chip .csc-lbl{ color:var(--grey); font-size:9px; text-transform:uppercase; }
+  .log-btns{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .log-btns button{ background:var(--blue-light); color:var(--blue); border:1px solid var(--blue); border-radius:3px; font-size:11px; padding:5px 9px; cursor:pointer; font-family:inherit; }
+  .log-btns button:hover{ background:var(--blue); color:#fff; }
+
+  .disposition-btns{ display:flex; gap:6px; flex-wrap:wrap; }
+  .disposition-btn{ border-radius:4px; font-size:11px; padding:7px 10px; cursor:pointer; font-family:inherit; font-weight:bold; border:1px solid transparent; }
+  .disposition-btn.green{ background:#dff3e6; color:var(--green); border-color:var(--green); }
+  .disposition-btn.green:hover{ background:var(--green); color:#fff; }
+  .disposition-btn.blue{ background:var(--blue-light); color:var(--blue); border-color:var(--blue); }
+  .disposition-btn.blue:hover{ background:var(--blue); color:#fff; }
+  .disposition-btn.amber{ background:var(--orange-light); color:var(--orange); border-color:var(--orange); }
+  .disposition-btn.amber:hover{ background:var(--orange); color:#fff; }
+  .disposition-btn.grey{ background:#e7e7e7; color:#555; border-color:#aaa; }
+  .disposition-btn.grey:hover{ background:#555; color:#fff; }
+  .disposition-btn.red{ background:#fbdcdc; color:var(--red); border-color:var(--red); }
+  .disposition-btn.red:hover{ background:var(--red); color:#fff; }
+
+  .callback-schedule-box{ background:var(--blue-light); border:1px dashed var(--blue); border-radius:4px; padding:9px 11px; margin-top:8px; }
+  .callback-schedule-box input[type=datetime-local]{ font-size:12px; padding:6px 8px; }
+
+  .call-timer-box{ background:var(--alt); border:1px dashed var(--border); border-radius:4px; padding:8px 11px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .call-timer-live{ color:var(--red); font-weight:bold; font-size:11px; }
+  .time-clock-box{ margin-bottom:14px; border-left:4px solid var(--green); }
+
+  /* ---------- Sales Scripts / Objections / Definitions guide ---------- */
+  .scripts-page{ font-size:14px; line-height:1.7; }
+  .scripts-intro{ background:#fff; border:1px solid var(--border); border-radius:4px; padding:14px 16px; margin-bottom:14px; font-size:14px; line-height:1.7; }
+  .compliance-box{ background:var(--orange-light); border:1px solid var(--orange); border-radius:4px; padding:12px 14px; margin-bottom:16px; font-size:13px; line-height:1.65; }
+  .compliance-box h4{ margin:0 0 6px 0; color:#8a4d10; font-size:13px; }
+  .compliance-box ul{ margin:4px 0 0 0; padding-left:18px; }
+  .compliance-box li{ margin-bottom:4px; }
+
+  .acc-item{ background:#fff; border:1px solid var(--border); border-radius:4px; margin-bottom:8px; overflow:hidden; }
+  .acc-header{ display:flex; align-items:center; justify-content:space-between; padding:11px 14px; cursor:pointer; background:var(--alt); font-weight:bold; font-size:14px; color:var(--navy); }
+  .acc-header:hover{ background:var(--ltblue); }
+  .acc-header .acc-caret{ transition:transform .15s; flex-shrink:0; margin-left:10px; }
+  .acc-header.open .acc-caret{ transform:rotate(180deg); }
+  .acc-body{ padding:14px 16px; font-size:14px; line-height:1.75; display:none; }
+  .acc-body.open{ display:block; }
+  .acc-body p{ margin:0 0 10px 0; }
+  .acc-body p:last-child{ margin-bottom:0; }
+  .script-line-rep{ color:var(--navy); font-weight:bold; }
+  .script-line-prospect{ color:var(--grey); font-style:italic; }
+
+  .objection-item{ border-bottom:1px solid #eef0f4; padding:10px 0; }
+  .objection-item:last-child{ border-bottom:none; }
+  .objection-q{ font-weight:bold; font-size:14px; color:var(--red); margin-bottom:4px; }
+  .objection-q::before{ content:"\\201C"; }
+  .objection-q::after{ content:"\\201D"; }
+  .objection-a{ font-size:14px; line-height:1.7; }
+  .objection-a b{ color:var(--green); }
+
+  .term-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+  .term-item{ font-size:14px; line-height:1.6; padding:8px 0; border-bottom:1px solid #eef0f4; }
+  .term-item:last-child{ border-bottom:none; }
+  .term-item .term-name{ font-weight:bold; color:var(--navy); }
+
+  .section-heading{ color:var(--navy); font-size:16px; margin:20px 0 10px 0; padding-bottom:6px; border-bottom:2px solid var(--orange); }
+  .section-heading:first-child{ margin-top:0; }
+
+  /* condensed version embedded inside the lead popup */
+  .lead-scripts-embed{ font-size:14px; line-height:1.7; }
+  .lead-scripts-embed .acc-header{ font-size:13px; padding:9px 12px; }
+  .lead-scripts-embed .acc-body{ font-size:13px; padding:11px 13px; }
+  .lead-scripts-embed .objection-q, .lead-scripts-embed .objection-a{ font-size:13px; }
+
+  #toast{ position:fixed; bottom:18px; right:18px; background:var(--navy); color:#fff; padding:10px 16px; border-radius:4px; font-size:12px; box-shadow:0 4px 14px rgba(0,0,0,.25); display:none; z-index:100; }
+  #toast.show{ display:block; }
+
+  footer{ text-align:center; color:var(--grey); font-size:10px; padding:20px; }
+  .loading-note{ text-align:center; padding:30px; color:var(--grey); font-style:italic; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>PEDISON USA</h1>
+    <span class="tag">Unified Platform &mdash; LOS &middot; CRM &middot; Leads &middot; Marketing &middot; KPIs &amp; Leaderboard</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span id="whoAmI" style="font-size:11px;color:#cdddf2;"></span>
+    <select id="orgSelect"></select>
+  </div>
+</header>
+
+<nav id="tabNav"></nav>
+
+<main id="mainArea">
+  <div class="loading-note">Loading your data&hellip;</div>
+</main>
+
+<footer>Pedison USA Platform &mdash; data is stored in the shared Pedison CRM Google Sheet and visible to everyone with the sheet/app.</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================================
+   PEDISON USA PLATFORM v2
+   Single-file HTML/JS app: CRM, Lead Management, Loan Origination/Servicing
+   (LOS) pipeline, Marketing campaigns, plus Monday.com-style board features:
+   Table / Kanban / Timeline views, groupable boards with progress bars,
+   inline status editing, per-item Updates threads, and Automations.
+   Persistent storage: Google Sheets, via the Web App API defined in
+   Pedison_CRM_Sheets_Code.gs (WEB_APP_URL / API_SECRET below).
+   ========================================================================= */
+
+// Google Sheets Web App (see Pedison_CRM_Sheets_Code.gs) backing this app.
+// API_SECRET must match the API_SECRET constant in that script exactly.
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxeLJoOA4u5xO9SGxWi3SqI8ZJp8CnK61ShIx0UTkhwRXRnpL3sKmmHBHafDUQvgnKX/exec';
+const API_SECRET = 'CHANGE_ME_pedison_2026_shared_secret';
+const ENTITY_SHEET = { contacts:'Contacts', leads:'Leads', loans:'Loans', tasks:'Tasks', campaigns:'Campaigns', automations:'Automations', reps:'Reps', timeclock:'TimeClock' };
+
+const ORGS = ['Pedison USA', 'NCCB Credit', 'Allion Fund 1', 'Bridge Gate Capital'];
+
+const LOAN_STAGES = [
+  'Application Received', 'Docs Collection', 'Underwriting',
+  'Conditional Approval', 'Approved', 'Closing', 'Funded',
+  'Servicing', 'Closed / Paid Off'
+];
+const LOAN_STAGE_COLORS = {
+  'Application Received':'#1F6FA8', 'Docs Collection':'#3A80B8', 'Underwriting':'#E07B26',
+  'Conditional Approval':'#D68A1F', 'Approved':'#c9a227', 'Closing':'#8FA83B',
+  'Funded':'#1E7145', 'Servicing':'#154F31', 'Closed / Paid Off':'#555555'
+};
+
+const LEAD_STATUSES = ['New','Contacted','Qualifying','Qualified','Nurturing','Disqualified','Converted','Lost'];
+const LEAD_STATUS_PILL = {New:'blue', Contacted:'amber', Qualifying:'amber', Qualified:'green', Nurturing:'blue', Converted:'green', Lost:'red', Disqualified:'red'};
+const LEAD_STATUS_COLOR = {New:'#1F6FA8', Contacted:'#E07B26', Qualifying:'#D68A1F', Qualified:'#1E7145', Nurturing:'#3A80B8', Converted:'#1E7145', Lost:'#D64545', Disqualified:'#D64545'};
+
+const LEAD_CHANNELS = ['Instantly Email','Apollo','UCC Filing','CallRail Inbound','Website Form','Referral','Cold Outreach','Event','Other'];
+const LEAD_TYPES = ['UCC Filing','Credit Reporting Agency','3rd Party Business Loan Vendor','Purchased List','Referral','Web Inquiry','Trade Show / Event','Aged Lead','Other'];
+const CONTACT_TYPES = ['Borrower','Investor','Broker','Referral Partner','Title Company / Attorney','Vendor','JV Partner','Other'];
+const LOAN_PRODUCTS = ['Bridge Loan','Transactional Funding','Fix and Flip','Construction','DSCR Rental','UCC Merchant Advance','Allion Capital Raise','Credit Service (NCCB)','Other'];
+
+const TASK_PRIORITIES = ['Low','Normal','High','Urgent'];
+const TASK_PRIORITY_PILL = {Low:'grey', Normal:'blue', High:'amber', Urgent:'red'};
+const TASK_STATUSES = ['Open','In Progress','Complete','Canceled'];
+const TASK_STATUS_PILL = {Open:'blue', 'In Progress':'amber', Complete:'green', Canceled:'grey'};
+const TASK_STATUS_COLOR = {Open:'#1F6FA8', 'In Progress':'#E07B26', Complete:'#1E7145', Canceled:'#8a93a3'};
+
+const CAMPAIGN_CHANNELS = ['Instantly Email','SMS','CallRail Tracking','Direct'];
+const CAMPAIGN_STATUSES = ['Draft','Active','Paused','Completed'];
+const CAMPAIGN_STATUS_PILL = {Draft:'grey', Active:'green', Paused:'amber', Completed:'blue'};
+
+/* ============================================================================
+   SALES SCRIPTS, OBJECTIONS, DEFINITIONS & COMPLIANCE GUIDE — UCC LEADS
+   Pedison USA's own call cadence for working the UCC filing lead list.
+   ============================================================================ */
+
+const COMPLIANCE_NOTES = [
+  'Every UCC lead\u2019s Notes &amp; Call Log shows its National DNC flag and phone line status \u2014 check both before dialing. Never call a number flagged National DNC without documented prior business relationship or written consent.',
+  'A handful of states (California, New York, Utah, Virginia, Georgia, Connecticut, and Florida among them) have their own commercial financing disclosure laws layered on top of federal rules \u2014 these can affect what must be disclosed and how offers are presented in writing. When a lead is in one of these states, loop in compliance before sending a formal offer, not after.',
+  'Some states require two-party consent to record a call. When in doubt, state at the top of the call that it may be recorded for quality purposes and get a verbal acknowledgment.',
+  'This guide is a calling/sales aid, not legal advice \u2014 for anything that touches state-specific licensing or disclosure requirements, confirm with Dickson or outside counsel before it goes to a prospect in writing.',
+];
+
+const SALES_SCRIPTS = [
+  { title: '1. Cold Call Opener \u2014 UCC Filing Lead',
+    lines: [
+      { rep: 'Hi, is this {FirstName}?' },
+      { prospect: '(Yes, this is {FirstName}.)' },
+      { rep: 'Hey {FirstName}, this is {YourName} \u2014 I work with Pedison USA, we\u2019re a private lending group here in the U.S. I\u2019m calling business owners in your area who\u2019ve recently financed equipment or working capital through a UCC filing, and wanted to reach out because we often help owners like you access additional funding \u2014 lines of credit, working capital, that kind of thing \u2014 usually faster and with less paperwork than a bank. Do you have 60 seconds?' },
+      { prospect: '(Sure, go ahead.)' },
+      { rep: 'Great \u2014 quick couple questions so I don\u2019t waste your time: how long has {Company} been operating, and roughly what does the business bring in on a monthly basis?' },
+      { note: 'Qualify on time-in-business (6+ months is typical minimum) and monthly revenue. If it clears the bar, move to setting a callback or sending a soft pull / one-page application. If they\u2019re not a fit today, thank them and ask permission to check back in 90 days \u2014 log that as a note.' },
+    ]},
+  { title: '2. Voicemail Script',
+    lines: [
+      { rep: 'Hi {FirstName}, this is {YourName} with Pedison USA. We help business owners access working capital and lines of credit \u2014 often within a few business days, without tying up your personal credit. I have a couple of quick questions about {Company} to see what you might qualify for. Call me back at {YourPhone}, or I\u2019ll try you again in a day or two. Thanks, talk soon.' },
+      { note: 'Keep it under 25 seconds. Always log the voicemail (+ Log Call) so the next rep working this lead knows contact was already attempted.' },
+    ]},
+  { title: '3. Gatekeeper / Front Desk Script',
+    lines: [
+      { rep: 'Hi, this is {YourName} with Pedison USA \u2014 I\u2019m calling about a business financing opportunity for {Company}. Is {FirstName} available?' },
+      { prospect: '(They\u2019re not available / who is this regarding?)' },
+      { rep: 'No problem \u2014 I work with business owners on funding and working capital, and I have a couple of quick questions for {FirstName} about {Company}\u2019s financing options. What\u2019s the best time to catch them, or is there a direct line I could try?' },
+      { note: 'Stay brief and professional with gatekeepers \u2014 never pitch the offer in detail to someone who isn\u2019t the decision-maker. Log the best callback window as a note and set a Task with that due date.' },
+    ]},
+  { title: '4. Warm Follow-Up (After Text or Email)',
+    lines: [
+      { rep: 'Hi {FirstName}, it\u2019s {YourName} following up on the text/email I sent about funding options for {Company}. Did you get a chance to look at it?' },
+      { prospect: '(I saw it / I haven\u2019t looked yet / not interested right now.)' },
+      { rep: 'No worries either way \u2014 the short version is we help business owners get working capital without the full bank underwriting process. Would it be worth 5 minutes to see what {Company} could qualify for, no obligation?' },
+      { note: 'If they haven\u2019t looked yet, offer to walk them through it live rather than re-sending the same text. This converts better than a second unanswered text.' },
+    ]},
+  { title: '5. Objection-Heavy / Skeptical Owner',
+    lines: [
+      { rep: 'I hear you, {FirstName} \u2014 a lot of the owners I talk to have been burned by MCA offers or spam calls before, so I get the hesitation. I\u2019m not asking you to sign anything today. I just want to understand where {Company} stands and see if there\u2019s actually a fit \u2014 if there isn\u2019t, I\u2019ll tell you that too.' },
+      { note: 'Use this as a bridge into the objection/rebuttal list below \u2014 pick the specific objection they raised and use the matching rebuttal rather than a generic pitch.' },
+    ]},
+  { title: '6. Closing & Appointment-Setting Script',
+    lines: [
+      { rep: 'Based on what you\u2019ve told me, {Company} sounds like a good fit for us to take a closer look. The next step is a short application \u2014 takes about 5 minutes, no hard credit pull \u2014 and I can usually have options back to you within 24 to 48 hours. Does {Day} morning or afternoon work better for a quick follow-up call to go over what comes back?' },
+      { prospect: '(Morning works better.)' },
+      { rep: 'Perfect \u2014 I\u2019ll send the application link now and call you {Day} morning at {Time}. Anything come up before then, this is the best number to reach me at.' },
+      { note: 'Set a Task in the CRM immediately with that callback date/time, and mark the lead status \u201cQualifying\u201d or \u201cQualified\u201d so it shows correctly on the pipeline.' },
+    ]},
+];
+
+const OBJECTIONS = [
+  { q: 'I\u2019m not interested.', a: 'Totally understandable \u2014 can I ask, is that because you\u2019re not looking for funding right now, or you\u2019ve had a bad experience with lenders before? <b>(Listen, then route to the matching objection below.)</b> If it\u2019s truly not the right time, no problem \u2014 mind if I check back in a few months?' },
+  { q: 'How did you get my number?', a: 'Fair question \u2014 your business shows up on a public UCC filing, which just means {Company} has financed equipment or working capital before. That tells us you\u2019re an active business that\u2019s used financing in the past, which is exactly who we work with.' },
+  { q: 'My rates/terms are already good, I don\u2019t need anything else.', a: '<b>That\u2019s great to hear</b> \u2014 I\u2019m not trying to replace what\u2019s working. A lot of the owners we work with actually keep their existing setup and use us for a separate need \u2014 seasonal cash flow, a new piece of equipment, payroll gap. Would it hurt to know what you\u2019d qualify for, just to have in your back pocket?' },
+  { q: 'I\u2019ve been burned by a merchant cash advance before.', a: '<b>I hear that a lot</b>, and it\u2019s a fair concern \u2014 MCAs can get expensive fast with daily withdrawals. What we offer isn\u2019t a stacked daily-debit product; we look at term loans and lines of credit structured around your actual cash flow. I\u2019d rather show you the real numbers than have you guess based on a bad past experience.' },
+  { q: 'Send me something in writing / email first.', a: 'Happy to \u2014 I\u2019ll send that over right now. Since terms depend on a couple of specifics about {Company}, can I grab your revenue range and time in business first so what I send actually applies to you, instead of a generic flyer?' },
+  { q: 'I need to talk to my business partner / accountant first.', a: 'Makes total sense, this shouldn\u2019t be a solo decision. Would it help if I sent over a one-pager you could forward to them, and we set a specific time to reconnect once you\u2019ve both had a look?' },
+  { q: 'What\u2019s the catch / what are the rates?', a: 'No catch \u2014 rates and terms depend on time in business, monthly revenue, and what the funds are for, same as any lender. I\u2019d rather run the numbers with your actual info than quote a range that ends up not applying to you. Can I ask a couple quick questions to get you a real answer?' },
+  { q: 'I\u2019m on the Do Not Call list / stop calling me.', a: 'Understood \u2014 I\u2019ll remove you from our list right away and won\u2019t call again. <b>Mark the lead Lost immediately, flag National DNC in a note, and do not call, text, or email that number again.</b>' },
+  { q: 'How is this different from all the other calls I get?', a: 'Fair \u2014 a lot of what\u2019s out there is a broker shopping your file to a dozen lenders after the call. We fund directly through Pedison USA, so there\u2019s one point of contact and one underwriting process, not your information getting resold.' },
+];
+
+const DEFINITIONS = [
+  { term:'UCC-1 Filing', def:'A public record ("Uniform Commercial Code" financing statement) a lender files when a business pledges collateral for a loan. It\u2019s how our lead list is built \u2014 a UCC-1 on file means the business has financed something before and is an active, funding-experienced business.' },
+  { term:'Filing Party / Secured Party', def:'The lender or finance company that filed the UCC-1 \u2014 shown in the lead\u2019s Source field and notes. Useful context: it tells you who they financed with previously, which can shape how you position our offer.' },
+  { term:'Lien', def:'A legal claim against a specific business asset (equipment, receivables, etc.) that secures a loan. If the asset is sold, the lien holder gets paid first.' },
+  { term:'Personal Guarantee (PG)', def:'A promise by the business owner to personally repay a business debt if the business itself can\u2019t. Most small-business financing, including ours, requires one \u2014 be upfront about this rather than let it surprise them later.' },
+  { term:'MCA (Merchant Cash Advance)', def:'A lump sum advanced against future receivables/sales, repaid via daily or weekly automatic debits. Often what a skeptical prospect has been burned by \u2014 see the matching objection/rebuttal above.' },
+  { term:'Factor Rate', def:'A multiplier (e.g. 1.25) instead of an interest rate, common in MCA-style products \u2014 $10,000 at a 1.25 factor rate means $12,500 owed total. Not directly comparable to APR; know the difference if a prospect brings up a competing "rate."' },
+  { term:'DSCR (Debt Service Coverage Ratio)', def:'A measure of whether a business\u2019s cash flow covers its debt payments. Relevant mainly for larger/real-estate-backed deals, less so for smaller UCC-lead working capital requests.' },
+  { term:'Time in Business', def:'How long the business has operated under its current ownership/structure \u2014 one of the first two qualifying questions in the cold-call opener above.' },
+  { term:'Stacking', def:'Taking on multiple cash-advance-style products at once against the same receivables, which can quickly become unmanageable. Worth asking about directly if a prospect mentions "other financing" \u2014 it changes what they can responsibly qualify for.' },
+  { term:'National DNC', def:'The National Do Not Call Registry flag already captured on each UCC lead. If a lead shows National DNC: Y, do not cold call that number \u2014 see the Compliance Notes above.' },
+];
+
+const SCRIPTS_INTRO = 'Pedison USA\u2019s calling guide for working the UCC filing lead list. Six call scenarios, common objections with rebuttals, key term definitions, and state-compliance notes \u2014 all in one place so you\u2019re never caught without the right words on a live call. The same guide is also available inline on every lead\u2019s detail popup.';
+
+/* ------------------------------ sales reps / login -------------------------------- */
+
+const REPS_SEED = [
+  { repNumber:115, name:'Lawrence Hill', pin:'1150', role:'Senior Manager', org:'Pedison USA', isSuperAdmin:true, email:'lawrencehill@pedisonusa.com' },
+  ...Array.from({length:11}, (_,i)=>{
+    const n = 116+i;
+    return { repNumber:n, name:'Rep '+n, pin:String(n)+'0', role:'Sales Rep', org:'Pedison USA', isSuperAdmin:false, email:'' };
+  }),
+];
+
+let currentRep = null;   // { id, repNumber, name, pin, role, org, isSuperAdmin, email }
+let modalLocked = false; // true while the login modal is open — blocks backdrop-click / X dismissal
+function isAdmin(){ return !!(currentRep && currentRep.isSuperAdmin); }
+
+/* ------------------------------ call dispositions -------------------------------- */
+
+const DISPOSITIONS = [
+  { id:'connected_interested', label:'Connected \u2014 Interested', pill:'green' },
+  { id:'connected_not_interested', label:'Connected \u2014 Not Interested', pill:'blue' },
+  { id:'left_voicemail', label:'Left Voicemail', pill:'amber' },
+  { id:'no_answer', label:'No Answer', pill:'grey' },
+  { id:'callback_scheduled', label:'Callback Scheduled', pill:'amber' },
+  { id:'wrong_number', label:'Wrong Number', pill:'grey' },
+  { id:'number_disconnected', label:'Number Disconnected', pill:'red' },
+  { id:'voicemail_not_setup', label:'Can\u2019t Leave VM \u2014 Not Set Up', pill:'grey' },
+  { id:'dnc_requested', label:'DNC Requested', pill:'red' },
+];
+const DISPOSITION_MAP = Object.fromEntries(DISPOSITIONS.map(d=>[d.id,d]));
+
+// Which dispositions represent a real connection, vs a no-contact attempt,
+// vs disqualifying the number entirely — drives the call-status color code.
+const CONNECTED_DISPOSITIONS = ['connected_interested','connected_not_interested'];
+const DEAD_NUMBER_DISPOSITIONS = ['number_disconnected'];
+
+// ---------------------------------------------------------------------------
+// Call-status color code — derived from a lead's disposition history, not a
+// separately-tracked field, so it's always in sync with what's actually
+// been logged. DNC always wins regardless of what's logged after it.
+// ---------------------------------------------------------------------------
+const CALL_STATUS_LEGEND = [
+  { key:'not_called', label:'Not Called Yet', color:'#b9c2ca' },
+  { key:'attempted', label:'Attempted \u2014 No Contact', color:'#E07B26' },
+  { key:'connected', label:'Connected', color:'#1E7145' },
+  { key:'callback', label:'Callback Scheduled', color:'#1F6FA8' },
+  { key:'dnc', label:'DNC / Disconnected \u2014 Do Not Call', color:'#D64545' },
+];
+const CALL_STATUS_MAP = Object.fromEntries(CALL_STATUS_LEGEND.map(s=>[s.key,s]));
+
+function computeLeadCallStatus(lead){
+  const dispositions = (lead.comments||[]).filter(c=>c.disposition).slice().sort((a,b)=> new Date(b.ts)-new Date(a.ts));
+  const hasDnc = dispositions.some(d=>d.disposition==='dnc_requested' || DEAD_NUMBER_DISPOSITIONS.includes(d.disposition));
+  if(hasDnc) return CALL_STATUS_MAP.dnc;
+  if(dispositions.length===0) return (lead.calls||0)>0 ? CALL_STATUS_MAP.attempted : CALL_STATUS_MAP.not_called;
+  const latest = dispositions[0].disposition;
+  if(CONNECTED_DISPOSITIONS.includes(latest)) return CALL_STATUS_MAP.connected;
+  if(latest==='callback_scheduled') return CALL_STATUS_MAP.callback;
+  return CALL_STATUS_MAP.attempted;
+}
+function callStatusDotHtml(lead){
+  const s = computeLeadCallStatus(lead);
+  return `<span class="call-status-dot" style="background:${s.color};" title="${esc(s.label)}"></span>`;
+}
+function callStatusLegendHtml(){
+  return `<div class="call-status-legend">${CALL_STATUS_LEGEND.map(s=>`<span class="cs-legend-item"><span class="call-status-dot" style="background:${s.color};"></span>${esc(s.label)}</span>`).join('')}</div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Callback calendar — date-bucketing for the Calendar tab and for coloring
+// task due dates consistently with the same red/orange/blue/grey scheme.
+// ---------------------------------------------------------------------------
+function dateBucket(dueDate){
+  if(!dueDate) return { key:'none', label:'No Due Date', color:'#b9c2ca' };
+  const due = new Date(dueDate + 'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diffDays = Math.round((due-today)/86400000);
+  if(diffDays < 0) return { key:'overdue', label:'Overdue', color:'#D64545' };
+  if(diffDays === 0) return { key:'today', label:'Today', color:'#E07B26' };
+  if(diffDays === 1) return { key:'tomorrow', label:'Tomorrow', color:'#1F6FA8' };
+  if(diffDays <= 7) return { key:'week', label:'This Week', color:'#1E7145' };
+  return { key:'later', label:'Later', color:'#8a93a3' };
+}
+
+let DB = null;
+let currentTab = 'dashboard';
+let currentOrgFilter = 'All';
+let saveTimer = null;
+
+// board view + grouping state per tab (Monday-style "view switch")
+let viewState = { leads:'table', loans:'kanban', tasks:'table', campaigns:'table' };
+let groupState = { leads:'none', loans:'stage', tasks:'status', campaigns:'status' };
+let collapsedGroups = {}; // key: tab+groupName -> true/false
+let leaderboardMetric = 'fundedVolume';
+let dashboardScope = 'team';
+let adminSubTab = 'reps';
+
+function emptyDB(){
+  return { contacts:[], leads:[], loans:[], tasks:[], campaigns:[], automations:[], reps:[], timeclock:[], seq:1 };
+}
+
+function nextId(){ return 'id' + (DB.seq++) + '_' + Math.random().toString(36).slice(2,7); }
+
+/* ---------------------------- storage (Google Sheets API) --------------- */
+
+// Tracks which ids were present in each sheet as of the last successful
+// sync, so saveDB() can tell "removed from DB" apart from "never synced"
+// and issue the matching delete calls.
+let lastSyncedIds = { contacts:new Set(), leads:new Set(), loans:new Set(), tasks:new Set(), campaigns:new Set(), automations:new Set(), reps:new Set(), timeclock:new Set() };
+let syncing = false;
+
+async function apiGetAll(){
+  // Cache-bust with a timestamp + no-store — Apps Script Web App GET
+  // responses can otherwise get cached by the browser, which would keep
+  // showing stale data (like an old PIN) after you edit the Sheet directly.
+  const res = await fetch(`${WEB_APP_URL}?key=${encodeURIComponent(API_SECRET)}&_ts=${Date.now()}`, { cache: 'no-store' });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data;
+}
+// Sent as text/plain (not application/json) so the browser treats this as a
+// "simple request" and skips the CORS preflight — Apps Script Web Apps
+// don't answer OPTIONS preflight requests, so a real application/json
+// Content-Type here would make every save silently fail.
+async function apiUpsert(sheet, record){
+  const res = await fetch(WEB_APP_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ key: API_SECRET, sheet, action:'upsert', record })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data;
+}
+async function apiDelete(sheet, id){
+  const res = await fetch(WEB_APP_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ key: API_SECRET, sheet, action:'delete', record:{id} })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error);
+  return data;
+}
+
+// Creates a real Google Calendar event via the Apps Script backend
+// (CalendarApp, running under the script owner's Google account), and
+// invites the rep's email as a guest so it syncs to their own calendar too.
+// { title, description, startDateTime: "YYYY-MM-DDTHH:MM" (local), guestEmail }
+async function apiCreateCalendarEvent(payload){
+  const res = await fetch(WEB_APP_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ key: API_SECRET, action:'create_event', event: payload })
+  });
+  return res.json(); // don't throw — caller shows a soft warning on failure instead of blocking the CRM save
+}
+
+async function loadDB(){
+  try{
+    const data = await apiGetAll();
+    DB = emptyDB();
+    Object.keys(ENTITY_SHEET).forEach(key=>{ DB[key] = data[key] || []; });
+    Object.keys(ENTITY_SHEET).forEach(key=>{ lastSyncedIds[key] = new Set(DB[key].map(r=>r.id)); });
+  }catch(e){
+    DB = emptyDB();
+    toast('Could not load data from Google Sheets \u2014 check WEB_APP_URL / API_SECRET.', true);
+  }
+
+  if(!DB.automations) DB.automations = [];
+  ['contacts','leads','loans','tasks','campaigns'].forEach(k=>{
+    if(!DB[k]) DB[k] = [];
+    DB[k].forEach(item=>{ if(!item.comments) item.comments = []; });
+  });
+  DB.leads.forEach(l=>{
+    if(l.calls===undefined) l.calls = 0;
+    if(l.texts===undefined) l.texts = 0;
+    if(l.emails===undefined) l.emails = 0;
+    if(l.conversations===undefined) l.conversations = 0;
+    if(l.appointments===undefined) l.appointments = 0;
+    if(!l.leadType) l.leadType = '';
+  });
+  if(!DB.timeclock) DB.timeclock = [];
+}
+
+// Upserts every current record in each sheet, then deletes any record that
+// was synced before but is no longer present in DB (i.e. was deleted
+// locally). Runs on a short debounce (queueSave) so rapid edits collapse
+// into one sync pass instead of one request per keystroke.
+async function saveDB(){
+  if(syncing) { queueSave(); return; } // a sync is already running — try again shortly
+  syncing = true;
+  try{
+    for(const key of Object.keys(ENTITY_SHEET)){
+      const sheet = ENTITY_SHEET[key];
+      const current = DB[key] || [];
+      const currentIds = new Set(current.map(r=>r.id));
+      for(const record of current){ await apiUpsert(sheet, record); }
+      for(const oldId of lastSyncedIds[key]){
+        if(!currentIds.has(oldId)) await apiDelete(sheet, oldId);
+      }
+      lastSyncedIds[key] = currentIds;
+    }
+  }catch(e){
+    toast('Sync to Google Sheets failed \u2014 check your connection and try again.', true);
+  }
+  syncing = false;
+}
+function queueSave(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveDB, 600); }
+
+/* ------------------------------ helpers --------------------------------- */
+
+function money(n){ n = Number(n)||0; return '$' + n.toLocaleString('en-US', {maximumFractionDigits:0}); }
+function esc(s){ return (s===undefined||s===null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDate(d){ if(!d) return '\u2014'; const dt=new Date(d); if(isNaN(dt)) return '\u2014'; return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function fmtDateTime(d){ const dt=new Date(d); return dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function initials(name){ if(!name) return '?'; const p=name.trim().split(/\s+/); return ((p[0]||'')[0]+(p[1]?p[1][0]:'')).toUpperCase(); }
+function formatPhone(phone){
+  if(!phone) return '';
+  const digits = String(phone).replace(/\D/g,'');
+  const ten = digits.length===11 && digits[0]==='1' ? digits.slice(1) : digits;
+  if(ten.length!==10) return esc(phone); // unrecognized format — show as-entered rather than mangle it
+  return `(${ten.slice(0,3)}) ${ten.slice(3,6)}-${ten.slice(6)}`;
+}
+function formatEmail(email){
+  if(!email) return '';
+  return esc(String(email).trim().toLowerCase());
+}
+// Prefers split first/middle/last fields (the source of truth going forward);
+// falls back to the legacy combined "name" field for older records that
+// haven't been re-saved since the name split was added.
+function fullName(p){
+  const parts = [p.firstName, p.middleName, p.lastName].filter(Boolean);
+  return parts.length ? parts.join(' ') : (p.name || '');
+}
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? 'var(--red)' : 'var(--navy)';
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function orgFiltered(list){ if(currentOrgFilter==='All') return list; return list.filter(x=>x.org===currentOrgFilter); }
+function contactName(id){ const c = DB.contacts.find(c=>c.id===id); return c ? c.name : '\u2014'; }
+
+/* ------------------------------ layout ---------------------------------- */
+
+const TABS = [
+  {id:'dashboard', label:'Dashboard'},
+  {id:'leads', label:'Leads'},
+  {id:'loans', label:'Loan Pipeline'},
+  {id:'contacts', label:'Contacts'},
+  {id:'tasks', label:'Tasks'},
+  {id:'calendar', label:'Calendar'},
+  {id:'campaigns', label:'Marketing'},
+  {id:'scripts', label:'Sales Scripts'},
+];
+const ADMIN_TABS = [
+  {id:'admin', label:'Super Admin'},
+];
+
+function renderNav(){
+  const nav = document.getElementById('tabNav');
+  const tabs = isAdmin() ? [...TABS, ...ADMIN_TABS] : TABS;
+  nav.innerHTML = tabs.map(t=>`<button data-tab="${t.id}" class="${t.id===currentTab?'active':''}">${t.label}</button>`).join('');
+  nav.querySelectorAll('button').forEach(b=>{ b.addEventListener('click', ()=>{ currentTab=b.dataset.tab; render(); }); });
+}
+function renderOrgSelect(){
+  const sel = document.getElementById('orgSelect');
+  sel.innerHTML = ['All Organizations', ...ORGS].map(o=>{
+    const v = o==='All Organizations' ? 'All' : o;
+    return `<option value="${esc(v)}">${esc(o)}</option>`;
+  }).join('');
+  sel.value = currentOrgFilter;
+  sel.onchange = ()=>{ currentOrgFilter = sel.value; render(); };
+
+  const who = document.getElementById('whoAmI');
+  if(who){
+    who.innerHTML = currentRep
+      ? `Logged in as <strong style="color:#fff;">#${currentRep.repNumber} ${esc(currentRep.name)}</strong> &middot; <a href="#" id="switchUserLink" style="color:#cdddf2;">Switch</a>`
+      : '';
+    const link = document.getElementById('switchUserLink');
+    if(link) link.onclick = (e)=>{ e.preventDefault(); switchUser(); };
+  }
+}
+
+function render(){
+  renderNav();
+  renderOrgSelect();
+  closeStatusPop();
+  if(currentTab==='admin' && !isAdmin()) currentTab = 'dashboard'; // guard against a stale tab if an admin logs out mid-session
+  const main = document.getElementById('mainArea');
+  if(currentTab==='dashboard') main.innerHTML = viewDashboard();
+  else if(currentTab==='leads') main.innerHTML = viewLeads();
+  else if(currentTab==='loans') main.innerHTML = viewLoans();
+  else if(currentTab==='contacts') main.innerHTML = viewContacts();
+  else if(currentTab==='tasks') main.innerHTML = viewTasks();
+  else if(currentTab==='calendar') main.innerHTML = viewCalendar();
+  else if(currentTab==='campaigns') main.innerHTML = viewCampaigns();
+  else if(currentTab==='scripts') main.innerHTML = viewScripts();
+  else if(currentTab==='admin') main.innerHTML = viewSuperAdmin();
+  bindPageEvents();
+}
+
+/* ------------------------------ loan officer / rep KPIs -------------------------------- */
+
+const LB_METRICS = {
+  fundedVolume: {label:'Funded Volume', fmt: v=>money(v)},
+  loansFunded: {label:'Loans Funded', fmt: v=>String(v)},
+  leadsConverted: {label:'Leads Converted', fmt: v=>String(v)},
+  callsLogged: {label:'Calls Logged', fmt: v=>String(v)},
+};
+
+// Builds one production row per rep name found across loan.officer and
+// lead.assignedTo fields (org-filtered), mirroring the NCCB Lead CRM's
+// per-rep production/KPI approach.
+// ------------------------------ KPI period filtering -------------------------------- //
+
+const KPI_PERIODS = [
+  { id:'day', label:'Today' },
+  { id:'week', label:'This Week' },
+  { id:'month', label:'This Month' },
+  { id:'quarter', label:'This Quarter' },
+  { id:'all', label:'All Time' },
+];
+let kpiPeriod = 'week';
+
+function periodRange(period){
+  const now = new Date();
+  const start = new Date(now); start.setHours(0,0,0,0);
+  if(period==='day'){ /* start is already today 00:00 */ }
+  else if(period==='week'){ start.setDate(start.getDate() - start.getDay()); } // back to Sunday
+  else if(period==='month'){ start.setDate(1); }
+  else if(period==='quarter'){ const q = Math.floor(start.getMonth()/3); start.setMonth(q*3, 1); }
+  else if(period==='all'){ start.setFullYear(2000); }
+  return { start, end: new Date(now.getTime()+60000) }; // end = now (+1min buffer)
+}
+function inPeriod(tsOrDate, period){
+  if(!tsOrDate) return false;
+  const { start, end } = periodRange(period);
+  const t = new Date(tsOrDate);
+  return t >= start && t <= end;
+}
+
+// Counts disposition-tagged notes within the period — this IS the real-time
+// "calls made" figure (pulled straight from the Notes & Call Log), rather
+// than the lifetime counter on the lead, so it's accurate per period.
+function callsInPeriod(lead, period){
+  return (lead.comments||[]).filter(c=>c.disposition && inPeriod(c.ts, period)).length;
+}
+function conversationsInPeriod(lead, period){
+  return (lead.comments||[]).filter(c=>c.disposition && CONNECTED_DISPOSITIONS.includes(c.disposition) && inPeriod(c.ts, period)).length;
+}
+function appointmentsInPeriod(lead, period){
+  return (lead.comments||[]).filter(c=>c.tag==='appointment' && inPeriod(c.ts, period)).length;
+}
+function callSecondsInPeriod(lead, period){
+  return (lead.comments||[]).filter(c=>c.disposition && inPeriod(c.ts, period)).reduce((s,c)=>s+(Number(c.durationSeconds)||0),0);
+}
+function formatDuration(totalSeconds){
+  const h = Math.floor(totalSeconds/3600), m = Math.floor((totalSeconds%3600)/60);
+  if(h>0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
+function computeRepKPIs(period){
+  period = period || 'all';
+  const loans = orgFiltered(DB.loans);
+  const leads = orgFiltered(DB.leads);
+  const names = new Set();
+  loans.forEach(l=>{ if(l.officer) names.add(l.officer.trim()); });
+  leads.forEach(l=>{ if(l.assignedTo) names.add(l.assignedTo.trim()); });
+
+  return Array.from(names).map(name=>{
+    const repLeads = leads.filter(l=>(l.assignedTo||'').trim()===name);
+    const repLoans = loans.filter(l=>(l.officer||'').trim()===name);
+    const funded = repLoans.filter(l=>(l.stage==='Funded'||l.stage==='Closed / Paid Off') && inPeriod(l.fundedAt||l.updatedAt, period));
+    const fundedVolume = funded.reduce((s,l)=>s+(Number(l.approvedAmount||l.requestedAmount)||0),0);
+    const callsLogged = repLeads.reduce((s,l)=>s+callsInPeriod(l,period),0);
+    const textsLogged = repLeads.reduce((s,l)=>s+(l.comments||[]).filter(c=>c.tag==='text-log'&&inPeriod(c.ts,period)).length,0);
+    const conversationsLogged = repLeads.reduce((s,l)=>s+conversationsInPeriod(l,period),0);
+    const appointmentsSet = repLeads.reduce((s,l)=>s+appointmentsInPeriod(l,period),0);
+    const callTimeSeconds = repLeads.reduce((s,l)=>s+callSecondsInPeriod(l,period),0);
+    const leadsConverted = repLeads.filter(l=>l.status==='Converted' && inPeriod(l.createdAt, period==='all'?'all':period)).length;
+    const clockedSeconds = computeTimeClockSeconds(name, period);
+    return {
+      name,
+      leadsAssigned: repLeads.length,
+      callsLogged, textsLogged, conversationsLogged, appointmentsSet, callTimeSeconds,
+      leadsConverted,
+      loansOriginated: repLoans.length,
+      loansFunded: funded.length,
+      fundedVolume,
+      winRate: repLoans.length ? Math.round((funded.length/repLoans.length)*100) : 0,
+      dispositionCounts: computeDispositionCounts(name, period),
+      clockedSeconds,
+    };
+  }).sort((a,b)=>b.fundedVolume-a.fundedVolume);
+}
+
+// The call-disposition KPI registry: tallies every logged disposition
+// (org-filtered, optionally scoped to one rep by name, and to a period)
+// by disposition type, pulled straight from each lead's permanent Notes &
+// Call Log in real time — not a separately-tracked/stale counter.
+function computeDispositionCounts(repName, period){
+  period = period || 'all';
+  const leads = orgFiltered(DB.leads);
+  const counts = {}; DISPOSITIONS.forEach(d=>{ counts[d.id] = 0; });
+  leads.forEach(l=>{
+    (l.comments||[]).forEach(c=>{
+      if(!c.disposition) return;
+      if(repName && (c.author||'').trim() !== repName) return;
+      if(!inPeriod(c.ts, period)) return;
+      if(counts[c.disposition]===undefined) counts[c.disposition] = 0;
+      counts[c.disposition]++;
+    });
+  });
+  return counts;
+}
+
+function dispositionBreakdownHtml(counts, title){
+  const max = Math.max(1, ...Object.values(counts));
+  const total = Object.values(counts).reduce((a,b)=>a+b,0);
+  return `
+    <div class="box" style="margin-top:14px;">
+      <h3>${esc(title)} <span style="font-weight:normal;color:var(--grey);font-size:11px;">(${total} logged)</span></h3>
+      ${total===0 ? '<div class="loading-note">No call dispositions logged yet \u2014 use the disposition buttons in a lead\u2019s Notes &amp; Call Log.</div>' :
+        DISPOSITIONS.map(d=>`<div class="bar-row"><div class="bar-label">${esc(d.label)}</div><div class="bar-track"><div class="bar-fill" style="width:${(counts[d.id]/max*100)||0}%; background:${DISPOSITION_COLOR[d.pill]};"></div></div><div class="bar-count">${counts[d.id]}</div></div>`).join('')}
+    </div>`;
+}
+const DISPOSITION_COLOR = { green:'#1E7145', blue:'#1F6FA8', amber:'#E07B26', grey:'#8a93a3', red:'#D64545' };
+
+function leaderboardHtml(){
+  const reps = computeRepKPIs(kpiPeriod);
+  const metric = LB_METRICS[leaderboardMetric];
+  const ranked = reps.slice().sort((a,b)=>b[leaderboardMetric]-a[leaderboardMetric]).filter(r=>r[leaderboardMetric]>0 || reps.length<=5);
+  const max = Math.max(1, ...ranked.map(r=>r[leaderboardMetric]));
+  const medalClass = i=> i===0?'medal-1':i===1?'medal-2':i===2?'medal-3':'';
+  const medalChar = i=> i===0?'\u{1F947}':i===1?'\u{1F948}':i===2?'\u{1F949}':(i+1);
+  return `
+    <div class="box">
+      <h3 style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">Loan Officer Leaderboard
+        <select class="kpi-select" id="lbMetricSelect">${Object.keys(LB_METRICS).map(k=>`<option value="${k}" ${k===leaderboardMetric?'selected':''}>${LB_METRICS[k].label}</option>`).join('')}</select>
+      </h3>
+      ${ranked.length===0 ? '<div class="loading-note">No production data yet for this period.</div>' :
+        ranked.map((r,i)=>`
+          <div class="lb-row">
+            <div class="lb-rank ${medalClass(i)}">${medalChar(i)}</div>
+            <div class="lb-name"><span class="avatar">${initials(r.name)}</span>${esc(r.name)}</div>
+            <div class="lb-track"><div class="lb-fill" style="width:${(r[leaderboardMetric]/max*100)||0}%"></div></div>
+            <div class="lb-value">${metric.fmt(r[leaderboardMetric])}</div>
+          </div>`).join('')}
+    </div>`;
+}
+
+function repProductionTableHtml(){
+  const reps = computeRepKPIs(kpiPeriod);
+  return `
+    <div class="box" style="margin-top:14px;">
+      <h3>Loan Officer Production <span style="font-weight:normal;color:var(--grey);font-size:11px;">(${KPI_PERIODS.find(p=>p.id===kpiPeriod).label})</span></h3>
+      ${reps.length===0 ? '<div class="loading-note">No reps found yet. Set "Assigned To" on a lead or "Loan Officer" on a loan to start tracking production.</div>' : `
+      <table>
+        <thead><tr><th>Rep</th><th>Leads Assigned</th><th>Calls</th><th>Talk Time</th><th>Conversations</th><th>Appointments</th><th>Leads Converted</th><th>Loans Funded</th><th>Funded Volume</th><th>Clocked In</th></tr></thead>
+        <tbody>
+          ${reps.map(r=>`
+            <tr>
+              <td><span class="avatar">${initials(r.name)}</span><strong>${esc(r.name)}</strong></td>
+              <td>${r.leadsAssigned}</td>
+              <td>${r.callsLogged}</td>
+              <td>${formatDuration(r.callTimeSeconds)}</td>
+              <td>${r.conversationsLogged}</td>
+              <td>${r.appointmentsSet}</td>
+              <td>${r.leadsConverted}</td>
+              <td>${r.loansFunded}</td>
+              <td>${money(r.fundedVolume)}</td>
+              <td>${formatDuration(r.clockedSeconds)}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`}
+    </div>
+    <div class="grid2" style="margin-top:14px;">
+      <div class="box">
+        <h3>Funded Volume by Rep</h3>
+        ${reps.length===0 ? '<div class="loading-note">No data yet.</div>' :
+          (()=>{ const max = Math.max(1,...reps.map(r=>r.fundedVolume));
+            return reps.slice().sort((a,b)=>b.fundedVolume-a.fundedVolume).map(r=>`
+              <div class="bar-row"><div class="bar-label">${esc(r.name)}</div><div class="bar-track"><div class="bar-fill" style="width:${(r.fundedVolume/max*100)||0}%; background:var(--orange);"></div></div><div class="bar-count" style="width:auto;">${money(r.fundedVolume)}</div></div>`).join(''); })()}
+      </div>
+      ${salesByLoanTypeHtml()}
+    </div>
+    ${leadsByTypeHtml()}`;
+}
+
+// "Sale (type of loan)" — funded loans this period, grouped by product type.
+function salesByLoanTypeHtml(){
+  const loans = orgFiltered(DB.loans).filter(l=>(l.stage==='Funded'||l.stage==='Closed / Paid Off') && inPeriod(l.fundedAt||l.updatedAt, kpiPeriod));
+  const byType = {};
+  loans.forEach(l=>{ const t = l.productType||'Other'; byType[t] = (byType[t]||0) + (Number(l.approvedAmount||l.requestedAmount)||0); });
+  const entries = Object.entries(byType).sort((a,b)=>b[1]-a[1]);
+  const max = Math.max(1, ...entries.map(e=>e[1]));
+  return `
+    <div class="box">
+      <h3>Sales by Loan Type <span style="font-weight:normal;color:var(--grey);font-size:11px;">(${loans.length} funded)</span></h3>
+      ${entries.length===0 ? '<div class="loading-note">No funded loans in this period.</div>' :
+        entries.map(([type,vol])=>`<div class="bar-row"><div class="bar-label">${esc(type)}</div><div class="bar-track"><div class="bar-fill" style="width:${(vol/max*100)||0}%; background:var(--green);"></div></div><div class="bar-count" style="width:auto;">${money(vol)}</div></div>`).join('')}
+    </div>`;
+}
+
+// "Lead type" breakdown — new leads created this period, grouped by the
+// Lead Type dropdown (UCC Filing, Credit Reporting Agency, etc.)
+function leadsByTypeHtml(){
+  const leads = orgFiltered(DB.leads).filter(l=>inPeriod(l.createdAt, kpiPeriod));
+  const byType = {};
+  leads.forEach(l=>{ const t = l.leadType || 'Uncategorized'; byType[t] = (byType[t]||0) + 1; });
+  const entries = Object.entries(byType).sort((a,b)=>b[1]-a[1]);
+  const max = Math.max(1, ...entries.map(e=>e[1]));
+  return `
+    <div class="box" style="margin-top:14px;">
+      <h3>New Leads by Lead Type <span style="font-weight:normal;color:var(--grey);font-size:11px;">(${leads.length} new leads this period)</span></h3>
+      ${entries.length===0 ? '<div class="loading-note">No new leads in this period.</div>' :
+        entries.map(([type,count])=>`<div class="bar-row"><div class="bar-label">${esc(type)}</div><div class="bar-track"><div class="bar-fill" style="width:${(count/max*100)||0}%; background:var(--blue);"></div></div><div class="bar-count">${count}</div></div>`).join('')}
+    </div>`;
+}
+
+/* ------------------------------ time clock -------------------------------- */
+
+function computeTimeClockSeconds(repName, period){
+  const entries = (DB.timeclock||[]).filter(e=>(e.repName||'').trim()===repName && inPeriod(e.clockIn, period));
+  return entries.reduce((s,e)=>{
+    const start = new Date(e.clockIn).getTime();
+    const end = e.clockOut ? new Date(e.clockOut).getTime() : Date.now();
+    return s + Math.max(0, Math.round((end-start)/1000));
+  }, 0);
+}
+function activeClockEntry(repName){
+  return (DB.timeclock||[]).find(e=>(e.repName||'').trim()===repName && !e.clockOut);
+}
+function timeClockWidgetHtml(){
+  if(!currentRep) return '';
+  const active = activeClockEntry(currentRep.name);
+  const todaySeconds = computeTimeClockSeconds(currentRep.name, 'day');
+  const weekSeconds = computeTimeClockSeconds(currentRep.name, 'week');
+  return `
+    <div class="box time-clock-box">
+      <h3>Time Clock</h3>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        ${active
+          ? `<button class="btn accent" id="clockOutBtn">Clock Out</button><span class="call-timer-live">\u25CF Clocked in since ${fmtDateTime(active.clockIn)}</span>`
+          : `<button class="btn" id="clockInBtn">Clock In</button><span style="color:var(--grey);font-size:12px;">Not clocked in</span>`}
+        <span style="color:var(--grey);font-size:12px;">Today: <strong style="color:var(--navy);">${formatDuration(todaySeconds)}</strong></span>
+        <span style="color:var(--grey);font-size:12px;">This week: <strong style="color:var(--navy);">${formatDuration(weekSeconds)}</strong></span>
+      </div>
+    </div>`;
+}
+
+
+
+function viewDashboard(){
+  const leads = orgFiltered(DB.leads);
+  const loans = orgFiltered(DB.loans);
+  const tasks = orgFiltered(DB.tasks);
+  const campaigns = orgFiltered(DB.campaigns);
+
+  const openTasks = tasks.filter(t=>t.status==='Open'||t.status==='In Progress').length;
+  const pipelineValue = loans.filter(l=>!['Funded','Closed / Paid Off'].includes(l.stage)).reduce((s,l)=>s+(Number(l.requestedAmount)||0),0);
+  const fundedThisMonth = loans.filter(l=>{
+    if(l.stage!=='Funded' && l.stage!=='Closed / Paid Off') return false;
+    const d = new Date(l.updatedAt||l.createdAt); const now = new Date();
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  });
+  const fundedAmt = fundedThisMonth.reduce((s,l)=>s+(Number(l.approvedAmount||l.requestedAmount)||0),0);
+
+  const leadsByStatus = {}; LEAD_STATUSES.forEach(s=>leadsByStatus[s]=0);
+  leads.forEach(l=>{ leadsByStatus[l.status]=(leadsByStatus[l.status]||0)+1; });
+  const maxLead = Math.max(1,...Object.values(leadsByStatus));
+
+  const loansByStage = {}; LOAN_STAGES.forEach(s=>loansByStage[s]=0);
+  loans.forEach(l=>{ loansByStage[l.stage]=(loansByStage[l.stage]||0)+1; });
+  const maxStage = Math.max(1,...Object.values(loansByStage));
+
+  const activeAutomations = (DB.automations||[]).filter(a=>a.active).length;
+
+  const recentActivity = []
+    .concat(leads.map(l=>({t:l.createdAt, text:`New lead: ${l.name} (${l.channel})`})))
+    .concat(loans.map(l=>({t:l.updatedAt||l.createdAt, text:`${l.loanNumber} \u2014 ${l.stage}`})))
+    .sort((a,b)=> new Date(b.t)-new Date(a.t)).slice(0,8);
+
+  return `
+    <div class="panel-head">
+      <div><h2>Dashboard</h2><div class="sub">${currentOrgFilter==='All'?'All organizations':esc(currentOrgFilter)}</div></div>
+      <div class="toolbar">
+        <select id="kpiPeriodSelect">${KPI_PERIODS.map(p=>`<option value="${p.id}" ${kpiPeriod===p.id?'selected':''}>${p.label}</option>`).join('')}</select>
+        <div class="view-switch">
+          <button data-dashscope="team" class="${dashboardScope==='team'?'active':''}">Team KPIs</button>
+          <button data-dashscope="mine" class="${dashboardScope==='mine'?'active':''}">My Dashboard${currentRep?' ('+esc(currentRep.name)+')':''}</button>
+        </div>
+      </div>
+    </div>
+    ${timeClockWidgetHtml()}
+    <div class="cards">
+      <div class="card"><div class="label">Open Leads</div><div class="value">${leads.filter(l=>!['Converted','Lost','Disqualified'].includes(l.status)).length}</div><div class="foot">${leads.length} total</div></div>
+      <div class="card"><div class="label">Active Pipeline Value</div><div class="value">${money(pipelineValue)}</div><div class="foot">${loans.filter(l=>!['Funded','Closed / Paid Off'].includes(l.stage)).length} loans in process</div></div>
+      <div class="card"><div class="label">Funded This Month</div><div class="value">${money(fundedAmt)}</div><div class="foot">${fundedThisMonth.length} loan(s)</div></div>
+      <div class="card"><div class="label">Open Tasks</div><div class="value">${openTasks}</div><div class="foot">${tasks.length} total</div></div>
+      <div class="card"><div class="label">Active Campaigns</div><div class="value">${campaigns.filter(c=>c.status==='Active').length}</div><div class="foot">${campaigns.length} total</div></div>
+      <div class="card"><div class="label">Automations Running</div><div class="value">${activeAutomations}</div><div class="foot">${(DB.automations||[]).length} total rules</div></div>
+    </div>
+    ${dashboardScope==='mine' ? myDashboardHtml() : `
+    <div class="grid2" style="margin-top:14px;">
+      ${leaderboardHtml()}
+      <div class="box"><h3>Recent Activity</h3>
+        ${recentActivity.length ? recentActivity.map(a=>`<div class="activity-item"><div class="ts">${fmtDateTime(a.t)}</div>${esc(a.text)}</div>`).join('') : '<div class="loading-note">No activity yet. Add a lead or loan to get started.</div>'}
+      </div>
+    </div>
+    ${repProductionTableHtml()}
+    ${dispositionBreakdownHtml(computeDispositionCounts(null, kpiPeriod), 'Team Call Disposition Registry')}
+    <div class="grid2" style="margin-top:14px;">
+      <div class="box"><h3>Loan Pipeline by Stage</h3>
+        ${LOAN_STAGES.map(s=>`<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(loansByStage[s]/maxStage*100)||0}%; background:${LOAN_STAGE_COLORS[s]};"></div></div><div class="bar-count">${loansByStage[s]}</div></div>`).join('')}
+      </div>
+      <div class="box"><h3>Leads by Status</h3>
+        ${LEAD_STATUSES.map(s=>`<div class="bar-row"><div class="bar-label">${s}</div><div class="bar-track"><div class="bar-fill" style="width:${(leadsByStatus[s]/maxLead*100)||0}%; background:${LEAD_STATUS_COLOR[s]};"></div></div><div class="bar-count">${leadsByStatus[s]}</div></div>`).join('')}
+      </div>
+    </div>
+    `}
+  `;
+}
+
+function myDashboardHtml(){
+  if(!currentRep){
+    return `<div class="box" style="margin-top:14px;"><div class="loading-note">Log in to see your individual dashboard.</div></div>`;
+  }
+  const allReps = computeRepKPIs(kpiPeriod);
+  const mine = allReps.find(r=>r.name===currentRep.name);
+  const rank = mine ? allReps.findIndex(r=>r.name===currentRep.name)+1 : null;
+
+  if(!mine){
+    return `<div class="box" style="margin-top:14px;"><div class="loading-note">No leads or loans are assigned to "${esc(currentRep.name)}" yet \u2014 numbers will appear here once leads are assigned to you or loans list you as Loan Officer.</div></div>`;
+  }
+
+  return `
+    <div class="grid2" style="margin-top:14px;">
+      <div class="box">
+        <h3>Your Production${rank?` <span style="font-weight:normal;color:var(--grey);font-size:11px;">(Rank #${rank} of ${allReps.length} by funded volume)</span>`:''} <span style="font-weight:normal;color:var(--grey);font-size:11px;">(${KPI_PERIODS.find(p=>p.id===kpiPeriod).label})</span></h3>
+        <div class="kv"><div class="k">Leads Assigned</div><div>${mine.leadsAssigned}</div></div>
+        <div class="kv"><div class="k">Calls Logged</div><div>${mine.callsLogged}</div></div>
+        <div class="kv"><div class="k">Talk Time</div><div>${formatDuration(mine.callTimeSeconds)}</div></div>
+        <div class="kv"><div class="k">Conversations</div><div>${mine.conversationsLogged}</div></div>
+        <div class="kv"><div class="k">Appointments Set</div><div>${mine.appointmentsSet}</div></div>
+        <div class="kv"><div class="k">Leads Converted</div><div>${mine.leadsConverted}</div></div>
+        <div class="kv"><div class="k">Loans Originated</div><div>${mine.loansOriginated}</div></div>
+        <div class="kv"><div class="k">Loans Funded</div><div>${mine.loansFunded}</div></div>
+        <div class="kv"><div class="k">Funded Volume</div><div>${money(mine.fundedVolume)}</div></div>
+        <div class="kv"><div class="k">Win Rate</div><div>${mine.winRate}%</div></div>
+        <div class="kv"><div class="k">Clocked Time</div><div>${formatDuration(mine.clockedSeconds)}</div></div>
+      </div>
+      ${dispositionBreakdownHtml(mine.dispositionCounts, 'Your Call Disposition Breakdown')}
+    </div>
+  `;
+}
+
+/* ------------------------- shared: view switch + group-by --------------- */
+
+function viewSwitchHtml(tab, views){
+  return `<div class="view-switch">${views.map(v=>`<button data-viewswitch="${tab}:${v.id}" class="${viewState[tab]===v.id?'active':''}">${v.label}</button>`).join('')}</div>`;
+}
+function groupSelectHtml(tab, options){
+  return `<select id="groupSelect_${tab}" data-groupselect="${tab}">${options.map(o=>`<option value="${o.id}" ${groupState[tab]===o.id?'selected':''}>Group by: ${o.label}</option>`).join('')}</select>`;
+}
+function groupKey(tab, name){ return tab+'::'+name; }
+
+/* generic grouping helper: groups items by a field, returns [{name, color, items}] */
+function groupItems(items, field, colorMap, fallbackColor){
+  const groups = {};
+  items.forEach(it=>{
+    const key = it[field] || 'Unassigned';
+    if(!groups[key]) groups[key] = [];
+    groups[key].push(it);
+  });
+  return Object.keys(groups).map(name=>({
+    name, color: (colorMap && colorMap[name]) || fallbackColor || '#1F4E79', items: groups[name]
+  }));
+}
+
+/* -------------------------------- leads ----------------------------------- */
+
+const LEAD_SEARCH_FIELDS = [
+  { id:'all', label:'All Fields' },
+  { id:'name', label:'Name' },
+  { id:'company', label:'Company' },
+  { id:'leadType', label:'Lead Type' },
+  { id:'city', label:'City' },
+  { id:'state', label:'State' },
+  { id:'county', label:'County' },
+  { id:'zip', label:'Zip' },
+  { id:'phone', label:'Phone' },
+  { id:'email', label:'Email' },
+];
+let leadSearchField = 'all';
+
+function viewLeads(){
+  const q = viewLeads._q || '';
+  let items = orgFiltered(DB.leads);
+  if(q){
+    const needle = q.toLowerCase();
+    if(leadSearchField==='all'){
+      items = items.filter(l => [l.name,l.company,l.email,l.phone,l.address,l.city,l.state,l.county,l.zip,l.businessType,l.naicsCode,l.sicCode].filter(Boolean).join(' ').toLowerCase().includes(needle));
+    } else {
+      items = items.filter(l => String(l[leadSearchField]||'').toLowerCase().includes(needle));
+    }
+  }
+
+  const head = `
+    <div class="panel-head">
+      <div><h2>Leads</h2><div class="sub">Lead capture, scoring, outbound call tracking, and conversion to loan file</div></div>
+      <div class="toolbar">
+        <select id="leadSearchFieldSelect">${LEAD_SEARCH_FIELDS.map(f=>`<option value="${f.id}" ${leadSearchField===f.id?'selected':''}>Search by: ${f.label}</option>`).join('')}</select>
+        <input type="search" id="leadSearch" placeholder="Search leads\u2026" value="${esc(q)}">
+        ${viewSwitchHtml('leads',[{id:'table',label:'Table'},{id:'kanban',label:'Kanban'}])}
+        ${viewState.leads==='table' ? groupSelectHtml('leads',[{id:'none',label:'A\u2013Z List'},{id:'status',label:'Status'},{id:'channel',label:'Channel'},{id:'leadType',label:'Lead Type'},{id:'assignedTo',label:'Assigned To'},{id:'org',label:'Organization'}]) : ''}
+        <button class="btn" id="addLeadBtn">+ Add Lead</button>
+      </div>
+    </div>`;
+
+  if(orgFiltered(DB.leads).length===0){
+    return head + `<div class="box"><div class="loading-note">No leads yet. Click "+ Add Lead" to create one.</div></div>`;
+  }
+
+  const legend = callStatusLegendHtml();
+
+  if(viewState.leads==='table' && groupState.leads==='none'){
+    const allMatches = items.slice().sort((a,b)=>a.name.localeCompare(b.name));
+    const showAll = !!viewLeads._showAll;
+    const capped = showAll ? allMatches : allMatches.slice(0,25);
+    return head + legend + `
+      <div class="box" style="margin-bottom:10px;padding:8px 12px;font-size:11px;color:var(--grey);">
+        Showing <strong>${capped.length}</strong> of ${allMatches.length} lead${allMatches.length===1?'':'s'}${q?` matching "${esc(q)}" (${LEAD_SEARCH_FIELDS.find(f=>f.id===leadSearchField).label})`:''}, A\u2013Z by name.
+        ${!showAll && allMatches.length>25 ? `<button class="link-btn" id="showAllLeadsBtn">Show all ${allMatches.length}</button>` : (showAll && allMatches.length>25 ? `<button class="link-btn" id="showAllLeadsBtn" data-collapse="1">Show first 25 only</button>` : '')}
+      </div>
+      <table>
+        <thead><tr><th></th><th>Name (who to call)</th><th>Company</th><th>Email / Phone</th><th>City / State</th><th>Channel</th><th>Status</th><th>Calls</th><th>Texts</th><th>Score</th><th>Org</th><th></th></tr></thead>
+        <tbody>
+          ${capped.length===0 ? `<tr class="empty-row"><td colspan="11">No leads match your search.</td></tr>` :
+          capped.map(l=>`
+            <tr>
+              <td>${callStatusDotHtml(l)}</td>
+              <td><span class="avatar">${initials(l.assignedTo||l.name)}</span><strong>${esc(l.name)}</strong></td>
+              <td>${esc(l.company)||'\u2014'}</td>
+              <td>${formatEmail(l.email)}${l.email&&l.phone?'<br>':''}${formatPhone(l.phone)}</td>
+              <td>${[esc(l.city),esc(l.state)].filter(Boolean).join(', ')||'\u2014'}</td>
+              <td>${esc(l.channel)}</td>
+              <td><span class="pill clickable ${LEAD_STATUS_PILL[l.status]||'grey'}" data-statuspop="lead:${l.id}">${l.status}</span></td>
+              <td>${l.calls||0}</td>
+              <td>${l.texts||0}</td>
+              <td>${l.score||0}</td>
+              <td>${esc(l.org)}</td>
+              <td class="row-actions">
+                <button class="link-btn" data-open-lead="${l.id}">Open</button>
+                ${l.status!=='Converted' ? `<button class="link-btn" data-convert-lead="${l.id}">Convert</button>` : ''}
+                ${isAdmin() ? `<button class="link-btn red" data-del-lead="${l.id}">Delete</button>` : ''}
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  items = items.slice().sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+
+  if(viewState.leads==='kanban'){
+    const grouped = {}; LEAD_STATUSES.forEach(s=>grouped[s]=[]);
+    items.forEach(l=>{ (grouped[l.status]||(grouped[l.status]=[])).push(l); });
+    return head + legend + `<div class="kanban">${LEAD_STATUSES.map(s=>`
+      <div class="kcol">
+        <div class="kcol-head" style="background:${LEAD_STATUS_COLOR[s]}"><span>${s}</span><span>${grouped[s].length}</span></div>
+        <div class="kcol-body">
+          ${grouped[s].map(l=>`
+            <div class="kcard" data-lead="${l.id}">
+              <div class="kc-num">${callStatusDotHtml(l)}<span class="avatar">${initials(l.assignedTo||l.name)}</span>${esc(l.name)}</div>
+              <div>${esc(l.company)||''}</div>
+              <div class="kc-amt">${l.requestedAmount?money(l.requestedAmount):''}</div>
+              <div class="kc-org">${esc(l.channel)} &middot; ${esc(l.org)}</div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  // table (grouped)
+  const gField = groupState.leads;
+  const groups = groupItems(items, gField, gField==='status'?LEAD_STATUS_COLOR:null, '#1F4E79');
+  return head + legend + groups.map(g=>{
+    const gk = groupKey('leads', g.name);
+    const collapsed = !!collapsedGroups[gk];
+    const doneCount = g.items.filter(l=>l.status==='Converted').length;
+    const pct = Math.round((doneCount/g.items.length)*100) || 0;
+    return `
+    <div class="group-block">
+      <div class="group-title-row ${collapsed?'collapsed':''}" style="background:${g.color}" data-grouptoggle="${gk}">
+        <div class="gt-left"><span class="gt-caret">\u25BC</span> ${esc(g.name)} <span style="opacity:.85;font-weight:normal;">(${g.items.length})</span></div>
+        <div class="group-progress-wrap"><span>${pct}% converted</span><div class="group-progress-track"><div class="group-progress-fill" style="width:${pct}%"></div></div></div>
+      </div>
+      <div class="group-body ${collapsed?'hidden':''}">
+        <table>
+          <thead><tr><th></th><th>Name (who to call)</th><th>Company</th><th>Email / Phone</th><th>Channel</th><th>Status</th><th>Score</th><th>Org</th><th></th></tr></thead>
+          <tbody>
+            ${g.items.map(l=>`
+              <tr>
+                <td>${callStatusDotHtml(l)}</td>
+                <td><span class="avatar">${initials(l.assignedTo||l.name)}</span><strong>${esc(l.name)}</strong></td>
+                <td>${esc(l.company)||'\u2014'}</td>
+                <td>${formatEmail(l.email)}${l.email&&l.phone?'<br>':''}${formatPhone(l.phone)}</td>
+                <td>${esc(l.channel)}</td>
+                <td><span class="pill clickable ${LEAD_STATUS_PILL[l.status]||'grey'}" data-statuspop="lead:${l.id}">${l.status}</span></td>
+                <td>${l.score||0}</td>
+                <td>${esc(l.org)}</td>
+                <td class="row-actions">
+                  <button class="link-btn" data-open-lead="${l.id}">Open</button>
+                  ${l.status!=='Converted' ? `<button class="link-btn" data-convert-lead="${l.id}">Convert</button>` : ''}
+                  ${isAdmin() ? `<button class="link-btn red" data-del-lead="${l.id}">Delete</button>` : ''}
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* -------------------------------- loans ------------------------------------ */
+
+function viewLoans(){
+  const loans = orgFiltered(DB.loans);
+  const head = `
+    <div class="panel-head">
+      <div><h2>Loan Pipeline</h2><div class="sub">Modeled on a LendingWise-style LOS pipeline, with Monday-style board views</div></div>
+      <div class="toolbar">
+        ${viewSwitchHtml('loans',[{id:'kanban',label:'Kanban'},{id:'table',label:'Table'},{id:'timeline',label:'Timeline'}])}
+        ${viewState.loans==='table' ? groupSelectHtml('loans',[{id:'stage',label:'Stage'},{id:'productType',label:'Product'},{id:'officer',label:'Loan Officer'},{id:'org',label:'Organization'}]) : ''}
+        <button class="btn" id="addLoanBtn">+ New Loan File</button>
+      </div>
+    </div>`;
+
+  if(loans.length===0){
+    return head + `<div class="box"><div class="loading-note">No loan files yet. Convert a lead or click "+ New Loan File".</div></div>`;
+  }
+
+  if(viewState.loans==='kanban'){
+    const grouped = {}; LOAN_STAGES.forEach(s=>grouped[s]=[]);
+    loans.forEach(l=>{ (grouped[l.stage]||(grouped[l.stage]=[])).push(l); });
+    return head + `<div class="kanban">${LOAN_STAGES.map(stage=>`
+      <div class="kcol">
+        <div class="kcol-head" style="background:${LOAN_STAGE_COLORS[stage]}"><span>${stage}</span><span>${grouped[stage].length}</span></div>
+        <div class="kcol-body">
+          ${grouped[stage].map(l=>`
+            <div class="kcard" data-loan="${l.id}">
+              <div class="kc-num">${esc(l.loanNumber)}</div>
+              <div>${esc(contactName(l.contactId))}</div>
+              <div class="kc-amt">${money(l.requestedAmount)}</div>
+              <div class="kc-org">${esc(l.productType)} &middot; ${esc(l.org)}</div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  if(viewState.loans==='timeline'){
+    const now = Date.now();
+    const withDates = loans.map(l=>{
+      const start = new Date(l.createdAt).getTime();
+      const end = l.fundedAt ? new Date(l.fundedAt).getTime() : now;
+      return {l, start, end};
+    });
+    const minT = Math.min(...withDates.map(x=>x.start));
+    const maxT = Math.max(...withDates.map(x=>x.end), now);
+    const span = Math.max(1, maxT - minT);
+    return head + `<div class="timeline-wrap">
+      ${withDates.map(x=>{
+        const leftPct = ((x.start-minT)/span*100);
+        const widthPct = Math.max(1.5, (x.end-x.start)/span*100);
+        return `<div class="tl-row">
+          <div class="tl-label"><div class="tl-num">${esc(x.l.loanNumber)}</div><div class="tl-sub">${esc(contactName(x.l.contactId))} &middot; ${esc(x.l.stage)}</div></div>
+          <div class="tl-track"><div class="tl-bar" data-loan="${x.l.id}" style="left:${leftPct}%; width:${widthPct}%; background:${LOAN_STAGE_COLORS[x.l.stage]};" title="${esc(x.l.stage)}"></div></div>
+        </div>`;
+      }).join('')}
+      <div class="tl-axis"><span>${fmtDate(minT)}</span><span style="margin-left:auto;">${fmtDate(maxT)}</span></div>
+    </div>`;
+  }
+
+  // table grouped
+  const gField = groupState.loans;
+  const groups = groupItems(loans, gField, gField==='stage'?LOAN_STAGE_COLORS:null, '#1F4E79');
+  return head + groups.map(g=>{
+    const gk = groupKey('loans', g.name);
+    const collapsed = !!collapsedGroups[gk];
+    const fundedCount = g.items.filter(l=>l.stage==='Funded'||l.stage==='Closed / Paid Off').length;
+    const pct = Math.round((fundedCount/g.items.length)*100) || 0;
+    return `
+    <div class="group-block">
+      <div class="group-title-row ${collapsed?'collapsed':''}" style="background:${g.color}" data-grouptoggle="${gk}">
+        <div class="gt-left"><span class="gt-caret">\u25BC</span> ${esc(g.name)} <span style="opacity:.85;font-weight:normal;">(${g.items.length})</span></div>
+        <div class="group-progress-wrap"><span>${pct}% funded</span><div class="group-progress-track"><div class="group-progress-fill" style="width:${pct}%"></div></div></div>
+      </div>
+      <div class="group-body ${collapsed?'hidden':''}">
+        <table>
+          <thead><tr><th>Loan #</th><th>Borrower</th><th>Product</th><th>Stage</th><th>Requested</th><th>Officer</th><th>Org</th><th></th></tr></thead>
+          <tbody>
+            ${g.items.map(l=>`
+              <tr>
+                <td><strong>${esc(l.loanNumber)}</strong></td>
+                <td>${esc(contactName(l.contactId))}</td>
+                <td>${esc(l.productType)}</td>
+                <td><span class="pill clickable blue" data-statuspop="loanstage:${l.id}" style="background:${LOAN_STAGE_COLORS[l.stage]}22;color:${LOAN_STAGE_COLORS[l.stage]};">${l.stage}</span></td>
+                <td>${money(l.requestedAmount)}</td>
+                <td>${esc(l.officer)||'\u2014'}</td>
+                <td>${esc(l.org)}</td>
+                <td class="row-actions"><button class="link-btn" data-loan="${l.id}">Open</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ------------------------------- contacts ----------------------------------- */
+
+function viewContacts(){
+  const q = viewContacts._q || '';
+  let items = orgFiltered(DB.contacts);
+  if(q) items = items.filter(c=>(c.name+c.company+c.email).toLowerCase().includes(q.toLowerCase()));
+  items = items.slice().sort((a,b)=>a.name.localeCompare(b.name));
+
+  return `
+    <div class="panel-head">
+      <div><h2>Contacts</h2><div class="sub">Borrowers, investors, brokers, and referral partners</div></div>
+      <div class="toolbar">
+        <input type="search" id="contactSearch" placeholder="Search contacts\u2026" value="${esc(q)}">
+        <button class="btn" id="addContactBtn">+ Add Contact</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Name</th><th>Company</th><th>Type</th><th>Email / Phone</th><th>Org</th><th>Source</th><th></th></tr></thead>
+      <tbody>
+        ${items.length===0 ? `<tr class="empty-row"><td colspan="7">No contacts yet.</td></tr>` :
+        items.map(c=>`
+          <tr>
+            <td><span class="avatar">${initials(c.name)}</span><strong>${esc(c.name)}</strong></td>
+            <td>${esc(c.company)||'\u2014'}</td>
+            <td><span class="pill blue">${esc(c.type)}</span></td>
+            <td>${formatEmail(c.email)}${c.email&&c.phone?'<br>':''}${formatPhone(c.phone)}</td>
+            <td>${esc(c.org)}</td>
+            <td>${esc(c.source)||'\u2014'}</td>
+            <td class="row-actions">
+              <button class="link-btn" data-edit-contact="${c.id}">Edit</button>
+              ${isAdmin() ? `<button class="link-btn red" data-del-contact="${c.id}">Delete</button>` : ''}
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+/* --------------------------------- tasks -------------------------------------- */
+
+function viewTasks(){
+  let items = orgFiltered(DB.tasks);
+  const head = `
+    <div class="panel-head">
+      <div><h2>Tasks</h2><div class="sub">Follow-ups across leads and loan files</div></div>
+      <div class="toolbar">
+        ${viewSwitchHtml('tasks',[{id:'table',label:'Table'},{id:'kanban',label:'Kanban'}])}
+        ${viewState.tasks==='table' ? groupSelectHtml('tasks',[{id:'status',label:'Status'},{id:'priority',label:'Priority'},{id:'assignedTo',label:'Assigned To'},{id:'org',label:'Organization'}]) : ''}
+        <button class="btn" id="addTaskBtn">+ Add Task</button>
+      </div>
+    </div>`;
+
+  if(items.length===0){
+    return head + `<div class="box"><div class="loading-note">No tasks yet.</div></div>`;
+  }
+
+  if(viewState.tasks==='kanban'){
+    const grouped = {}; TASK_STATUSES.forEach(s=>grouped[s]=[]);
+    items.forEach(t=>{ (grouped[t.status]||(grouped[t.status]=[])).push(t); });
+    return head + `<div class="kanban">${TASK_STATUSES.map(s=>`
+      <div class="kcol">
+        <div class="kcol-head" style="background:${TASK_STATUS_COLOR[s]}"><span>${s}</span><span>${grouped[s].length}</span></div>
+        <div class="kcol-body">
+          ${grouped[s].map(t=>`
+            <div class="kcard" data-task="${t.id}">
+              <div class="kc-num">${esc(t.title)}</div>
+              <div>${fmtDate(t.dueDate)}</div>
+              <div class="kc-org">${esc(t.priority)} &middot; ${esc(t.assignedTo)||'Unassigned'}</div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  items = items.slice().sort((a,b)=>{
+    const oa = a.status==='Complete'||a.status==='Canceled' ? 1 : 0;
+    const ob = b.status==='Complete'||b.status==='Canceled' ? 1 : 0;
+    if(oa!==ob) return oa-ob;
+    return new Date(a.dueDate||'2999-01-01') - new Date(b.dueDate||'2999-01-01');
+  });
+  const gField = groupState.tasks;
+  const groups = groupItems(items, gField, gField==='status'?TASK_STATUS_COLOR:null, '#1F4E79');
+  return head + groups.map(g=>{
+    const gk = groupKey('tasks', g.name);
+    const collapsed = !!collapsedGroups[gk];
+    const doneCount = g.items.filter(t=>t.status==='Complete').length;
+    const pct = Math.round((doneCount/g.items.length)*100) || 0;
+    return `
+    <div class="group-block">
+      <div class="group-title-row ${collapsed?'collapsed':''}" style="background:${g.color}" data-grouptoggle="${gk}">
+        <div class="gt-left"><span class="gt-caret">\u25BC</span> ${esc(g.name)} <span style="opacity:.85;font-weight:normal;">(${g.items.length})</span></div>
+        <div class="group-progress-wrap"><span>${pct}% complete</span><div class="group-progress-track"><div class="group-progress-fill" style="width:${pct}%"></div></div></div>
+      </div>
+      <div class="group-body ${collapsed?'hidden':''}">
+        <table>
+          <thead><tr><th>Title</th><th>Due</th><th>Priority</th><th>Status</th><th>Assigned To</th><th>Related To</th><th>Org</th><th></th></tr></thead>
+          <tbody>
+            ${g.items.map(t=>`
+              <tr>
+                <td><strong>${esc(t.title)}</strong></td>
+                <td>${fmtDate(t.dueDate)}</td>
+                <td><span class="pill ${TASK_PRIORITY_PILL[t.priority]||'grey'}">${t.priority}</span></td>
+                <td><span class="pill clickable ${TASK_STATUS_PILL[t.status]||'grey'}" data-statuspop="task:${t.id}">${t.status}</span></td>
+                <td>${t.assignedTo?`<span class="avatar">${initials(t.assignedTo)}</span>`:''}${esc(t.assignedTo)||'\u2014'}</td>
+                <td>${esc(t.relatedTo)||'\u2014'}</td>
+                <td>${esc(t.org)}</td>
+                <td class="row-actions">
+                  <button class="link-btn" data-open-task="${t.id}">Open</button>
+                  ${isAdmin() ? `<button class="link-btn red" data-del-task="${t.id}">Delete</button>` : ''}
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ------------------------------- campaigns -------------------------------------- */
+
+function viewCampaigns(){
+  let items = orgFiltered(DB.campaigns).slice().sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+
+  return `
+    <div class="panel-head">
+      <div><h2>Marketing Campaigns</h2><div class="sub">Outbound campaigns (Instantly, SMS, call tracking) and their lead yield</div></div>
+      <div class="toolbar"><button class="btn" id="addCampaignBtn">+ Add Campaign</button></div>
+    </div>
+    <table>
+      <thead><tr><th>Name</th><th>Channel</th><th>Status</th><th>Sent</th><th>Opened</th><th>Replied</th><th>Leads Created</th><th>Org</th><th></th></tr></thead>
+      <tbody>
+        ${items.length===0 ? `<tr class="empty-row"><td colspan="9">No campaigns yet.</td></tr>` :
+        items.map(c=>`
+          <tr>
+            <td><strong>${esc(c.name)}</strong></td>
+            <td>${esc(c.channel)}</td>
+            <td><span class="pill ${CAMPAIGN_STATUS_PILL[c.status]||'grey'}">${c.status}</span></td>
+            <td>${c.sent||0}</td>
+            <td>${c.opened||0}</td>
+            <td>${c.replied||0}</td>
+            <td>${c.leadsCreated||0}</td>
+            <td>${esc(c.org)}</td>
+            <td class="row-actions">
+              <button class="link-btn" data-edit-campaign="${c.id}">Edit</button>
+              ${isAdmin() ? `<button class="link-btn red" data-del-campaign="${c.id}">Delete</button>` : ''}
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+/* ------------------------------- automations -------------------------------------- */
+
+const AUTOMATION_ENTITY_FIELDS = {
+  lead: { label:'Lead', statusField:'status', options: LEAD_STATUSES },
+  task: { label:'Task', statusField:'status', options: TASK_STATUSES },
+  loan: { label:'Loan', statusField:'stage', options: LOAN_STAGES },
+};
+const AUTOMATION_ACTIONS = {
+  create_task: 'Create a follow-up task',
+  toast: 'Show a reminder notification',
+  post_update: 'Post an update to the item',
+};
+
+function automationDescription(a){
+  const ent = AUTOMATION_ENTITY_FIELDS[a.entity];
+  let desc = `When a <b>${ent.label}</b> ${ent.statusField} changes to <b>${esc(a.toValue)}</b>, `;
+  if(a.actionType==='create_task') desc += `create task "<b>${esc(a.params.title||'Follow up')}</b>"${a.params.daysOffset?` due in ${a.params.daysOffset} day(s)`:''}${a.params.assignedTo?` assigned to ${esc(a.params.assignedTo)}`:''}`;
+  else if(a.actionType==='toast') desc += `show reminder "<b>${esc(a.params.message||'')}</b>"`;
+  else if(a.actionType==='post_update') desc += `post update "<b>${esc(a.params.message||'')}</b>" to the item`;
+  return desc;
+}
+
+function viewAutomations(){
+  const rules = DB.automations || [];
+  return `
+    <div class="panel-head">
+      <div><h2>Automations</h2><div class="sub">Monday-style "when this happens, do that" rules that run automatically as your boards change</div></div>
+      <div class="toolbar"><button class="btn" id="addAutomationBtn">+ Add Automation</button></div>
+    </div>
+    ${rules.length===0 ? `<div class="box"><div class="loading-note">No automations yet. Try: "When a Lead status changes to Qualified, create a follow-up task."</div></div>` :
+      rules.map(a=>`
+        <div class="automation-row">
+          <div class="automation-desc">${automationDescription(a)} <span style="color:var(--grey);">(${esc(a.org)})</span></div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <label class="automation-toggle"><input type="checkbox" data-toggle-automation="${a.id}" ${a.active?'checked':''}> Active</label>
+            ${isAdmin() ? `<button class="link-btn red" data-del-automation="${a.id}">Delete</button>` : ''}
+          </div>
+        </div>`).join('')}
+  `;
+}
+
+/* ------------------------------ sales scripts / objections guide -------------------------------- */
+
+let accCounter = 0;
+// Tracks an in-progress call timer per lead id (client-side only, not
+// persisted) — { [leadId]: startedAtISOString }. Captured into a
+// disposition's durationSeconds when the outcome is logged.
+let activeCallTimers = {};
+function scriptLinesHtml(lines){
+  return lines.map(l=>{
+    if(l.rep) return `<p><span class="script-line-rep">You:</span> ${esc(l.rep)}</p>`;
+    if(l.prospect) return `<p><span class="script-line-prospect">Prospect:</span> ${esc(l.prospect)}</p>`;
+    if(l.note) return `<p style="color:var(--grey);"><b>Coaching note:</b> ${esc(l.note)}</p>`;
+    return '';
+  }).join('');
+}
+
+// Shared renderer used both on the full Sales Scripts tab and (condensed)
+// inside every lead's detail popup, so the exact same content is always
+// one click away on a live call.
+function scriptsGuideHtml(embedded){
+  const wrapClass = embedded ? 'lead-scripts-embed' : 'scripts-page';
+  const scriptsHtml = SALES_SCRIPTS.map(s=>{
+    const id = 'acc'+(accCounter++);
+    return `
+      <div class="acc-item">
+        <div class="acc-header" data-acc-toggle="${id}"><span>${esc(s.title)}</span><span class="acc-caret">\u25BC</span></div>
+        <div class="acc-body" id="${id}">${scriptLinesHtml(s.lines)}</div>
+      </div>`;
+  }).join('');
+
+  const objId = 'acc'+(accCounter++);
+  const objectionsHtml = `
+    <div class="acc-item">
+      <div class="acc-header" data-acc-toggle="${objId}"><span>Common Objections &amp; Rebuttals</span><span class="acc-caret">\u25BC</span></div>
+      <div class="acc-body" id="${objId}">
+        ${OBJECTIONS.map(o=>`<div class="objection-item"><div class="objection-q">${esc(o.q)}</div><div class="objection-a">${o.a}</div></div>`).join('')}
+      </div>
+    </div>`;
+
+  const defId = 'acc'+(accCounter++);
+  const definitionsHtml = `
+    <div class="acc-item">
+      <div class="acc-header" data-acc-toggle="${defId}"><span>Key Terms &amp; Definitions</span><span class="acc-caret">\u25BC</span></div>
+      <div class="acc-body" id="${defId}">
+        <div class="term-grid">${DEFINITIONS.map(d=>`<div class="term-item"><span class="term-name">${esc(d.term)}:</span> ${esc(d.def)}</div>`).join('')}</div>
+      </div>
+    </div>`;
+
+  const complianceHtml = `
+    <div class="compliance-box">
+      <h4>Compliance &amp; State Awareness</h4>
+      <ul>${COMPLIANCE_NOTES.map(n=>`<li>${n}</li>`).join('')}</ul>
+    </div>`;
+
+  return `<div class="${wrapClass}">
+    ${complianceHtml}
+    <div class="section-heading">Call Scripts</div>
+    ${scriptsHtml}
+    <div class="section-heading">Objections &amp; Rebuttals</div>
+    ${objectionsHtml}
+    <div class="section-heading">Definitions</div>
+    ${definitionsHtml}
+  </div>`;
+}
+
+function viewScripts(){
+  return `
+    <div class="panel-head">
+      <div><h2>Sales Scripts &amp; Objection Guide</h2><div class="sub">UCC lead calling guide \u2014 scripts, objections, rebuttals, definitions, and compliance notes</div></div>
+    </div>
+    <div class="scripts-intro">${SCRIPTS_INTRO}</div>
+    ${scriptsGuideHtml(false)}
+  `;
+}
+
+/* ------------------------------ super admin (consolidated) ------------------------------ */
+
+function viewSuperAdmin(){
+  if(!isAdmin()){
+    return `<div class="box"><div class="loading-note">Super Admin access only.</div></div>`;
+  }
+  return `
+    <div class="panel-head">
+      <div><h2>Super Admin</h2><div class="sub">Rep management, automations, and permissions \u2014 restricted to Super Admin logins</div></div>
+      <div class="view-switch">
+        <button data-adminsub="reps" class="${adminSubTab==='reps'?'active':''}">Reps</button>
+        <button data-adminsub="automations" class="${adminSubTab==='automations'?'active':''}">Automations</button>
+        <button data-adminsub="permissions" class="${adminSubTab==='permissions'?'active':''}">Permissions</button>
+      </div>
+    </div>
+    ${adminSubTab==='reps' ? viewReps() : adminSubTab==='automations' ? viewAutomations() : viewPermissions()}
+  `;
+}
+
+function viewPermissions(){
+  const reps = (DB.reps||[]).slice().sort((a,b)=>a.repNumber-b.repNumber);
+  return `
+    <div class="box">
+      <h3>Delete Permissions</h3>
+      <p style="font-size:12px;color:var(--grey);">Only Super Admins can permanently delete records (leads, contacts, loans, tasks, campaigns, automations, reps). Everyone else can view, edit, and log activity, but the Delete option is hidden for them everywhere in the app.</p>
+      <table style="margin-top:10px;">
+        <thead><tr><th>Rep</th><th>Super Admin</th></tr></thead>
+        <tbody>
+          ${reps.map(r=>`
+            <tr>
+              <td><span class="avatar">${initials(r.name)}</span>${esc(r.name)} (#${r.repNumber})</td>
+              <td>
+                <label style="display:flex;align-items:center;gap:6px;font-size:12px;">
+                  <input type="checkbox" data-toggle-admin="${r.id}" ${r.isSuperAdmin?'checked':''}> ${r.isSuperAdmin?'Yes':'No'}
+                </label>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ------------------------------ calendar / callback reminders ------------------------------ */
+
+function viewCalendar(){
+  const tasks = orgFiltered(DB.tasks).filter(t=>t.status!=='Complete' && t.status!=='Canceled');
+  const buckets = { overdue:[], today:[], tomorrow:[], week:[], later:[], none:[] };
+  tasks.forEach(t=>{ buckets[dateBucket(t.dueDate).key].push(t); });
+  const order = ['overdue','today','tomorrow','week','later','none'];
+  const bucketMeta = { overdue:dateBucket('2000-01-01'), today:dateBucket(new Date().toISOString().slice(0,10)) };
+
+  return `
+    <div class="panel-head">
+      <div><h2>Calendar</h2><div class="sub">Color-coded reminders \u2014 callbacks and every other open task, grouped by due date</div></div>
+    </div>
+    ${callStatusLegendForCalendarHtml()}
+    ${order.map(key=>{
+      const list = buckets[key];
+      if(list.length===0) return '';
+      const meta = key==='none' ? {label:'No Due Date', color:'#b9c2ca'} : dateBucket(key==='overdue' ? '2000-01-01' : key==='today' ? new Date().toISOString().slice(0,10) : key==='tomorrow' ? new Date(Date.now()+86400000).toISOString().slice(0,10) : key==='week' ? new Date(Date.now()+5*86400000).toISOString().slice(0,10) : new Date(Date.now()+30*86400000).toISOString().slice(0,10));
+      const label = key==='none' ? 'No Due Date' : meta.label;
+      const color = key==='none' ? '#b9c2ca' : meta.color;
+      const sorted = list.slice().sort((a,b)=> new Date(a.dueDate||'2999-01-01') - new Date(b.dueDate||'2999-01-01'));
+      return `
+        <div class="cal-bucket">
+          <div class="cal-bucket-head" style="background:${color};">${label} (${list.length})</div>
+          ${sorted.map(t=>`
+            <div class="cal-row" data-open-task="${t.id}">
+              <span class="call-status-dot" style="background:${color};"></span>
+              <div class="cal-date">${fmtDate(t.dueDate)}</div>
+              <div class="cal-title">${esc(t.title)}</div>
+              <div class="cal-meta">${esc(t.assignedTo)||'Unassigned'} &middot; ${esc(t.priority)} &middot; ${esc(t.relatedTo)||''}</div>
+            </div>`).join('')}
+        </div>`;
+    }).join('') || `<div class="box"><div class="loading-note">No open tasks or callbacks scheduled. Callback reminders are created automatically when you log a "Callback Scheduled" call disposition on a lead.</div></div>`}
+  `;
+}
+function callStatusLegendForCalendarHtml(){
+  const items = [
+    {label:'Overdue', color:'#D64545'}, {label:'Today', color:'#E07B26'}, {label:'Tomorrow', color:'#1F6FA8'},
+    {label:'This Week', color:'#1E7145'}, {label:'Later', color:'#8a93a3'},
+  ];
+  return `<div class="call-status-legend">${items.map(s=>`<span class="cs-legend-item"><span class="call-status-dot" style="background:${s.color};"></span>${esc(s.label)}</span>`).join('')}</div>`;
+}
+
+/* ------------------------------ reps roster ------------------------------ */
+
+function viewReps(){
+  const reps = (DB.reps||[]).slice().sort((a,b)=>a.repNumber-b.repNumber);
+  return `
+    <div class="panel-head">
+      <div><h2>Sales Reps</h2><div class="sub">Rep roster, login PINs, and email (for Google Calendar callback invites)</div></div>
+      <div class="toolbar"><button class="btn" id="addRepBtn">+ Add Rep</button></div>
+    </div>
+    <table>
+      <thead><tr><th>Rep #</th><th>Name</th><th>Role</th><th>Org</th><th>Email</th><th>PIN</th><th></th></tr></thead>
+      <tbody>
+        ${reps.length===0 ? `<tr class="empty-row"><td colspan="7">No reps yet.</td></tr>` :
+        reps.map(r=>`
+          <tr>
+            <td><strong>#${r.repNumber}</strong></td>
+            <td><span class="avatar">${initials(r.name)}</span>${esc(r.name)}${currentRep && String(currentRep.id)===String(r.id) ? ' <span class="pill green">You</span>' : ''}</td>
+            <td>${esc(r.role)}</td>
+            <td>${esc(r.org)}</td>
+            <td>${formatEmail(r.email)||'\u2014'}</td>
+            <td>${esc(r.pin)}</td>
+            <td class="row-actions">
+              <button class="link-btn" data-edit-rep="${r.id}">Edit</button>
+              ${isAdmin() ? `<button class="link-btn red" data-del-rep="${r.id}">Delete</button>` : ''}
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function repForm(existing){
+  const r = existing || { repNumber:'', name:'', role:'Sales Rep', org: ORGS[0], pin:'', isSuperAdmin:false, email:'' };
+  return `
+    <div class="field-row">
+      <div class="field"><label>Rep Number</label><input type="number" id="f_repnum" value="${r.repNumber}"></div>
+      <div class="field"><label>Name</label><input type="text" id="f_repname" value="${esc(r.name)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Role</label><input type="text" id="f_reprole" value="${esc(r.role)}" placeholder="Sales Rep, Senior Manager, etc."></div>
+      <div class="field"><label>Organization</label><select id="f_reporg">${selectOptions(ORGS, r.org)}</select></div>
+    </div>
+    <div class="field"><label>Email <span style="font-weight:normal;color:var(--grey);">(required for Google Calendar callback invites)</span></label><input type="email" id="f_repemail" value="${esc(r.email)}" placeholder="name@pedisonusa.com"></div>
+    <div class="field"><label>PIN</label><input type="text" id="f_reppin" value="${esc(r.pin)}"></div>
+    <div class="field"><label><input type="checkbox" id="f_repadmin" ${r.isSuperAdmin?'checked':''}> Super Admin (can delete records; full access)</label></div>
+  `;
+}
+function addOrEditRep(id){
+  const existing = id ? DB.reps.find(r=>String(r.id)===String(id)) : null;
+  openModal(existing?'Edit Rep':'Add Rep', repForm(existing),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = {
+      repNumber: Number(document.getElementById('f_repnum').value) || 0,
+      name: document.getElementById('f_repname').value.trim(),
+      role: document.getElementById('f_reprole').value.trim(),
+      org: document.getElementById('f_reporg').value,
+      email: document.getElementById('f_repemail').value.trim().toLowerCase(),
+      pin: document.getElementById('f_reppin').value.trim(),
+      isSuperAdmin: document.getElementById('f_repadmin').checked,
+    };
+    if(!data.name || !data.repNumber){ toast('Rep number and name are required', true); return; }
+    if(existing){
+      Object.assign(existing, data);
+      if(currentRep && String(currentRep.id)===String(existing.id)) currentRep = existing;
+      toast('Rep updated');
+    } else {
+      DB.reps.push({id:nextId(), createdAt:new Date().toISOString(), ...data});
+      toast('Rep added');
+    }
+    queueSave(); closeModal(); render();
+  };
+}
+
+function addAutomationModal(){
+  const body = `
+    <div class="automation-flow">
+      <span class="automation-chip">WHEN</span>
+      <select id="am_entity">
+        <option value="lead">Lead status changes to</option>
+        <option value="task">Task status changes to</option>
+        <option value="loan">Loan stage changes to</option>
+      </select>
+      <select id="am_tovalue"></select>
+    </div>
+    <div class="automation-flow">
+      <span class="automation-chip" style="background:var(--green);">THEN</span>
+      <select id="am_action">
+        <option value="create_task">Create a follow-up task</option>
+        <option value="toast">Show a reminder notification</option>
+        <option value="post_update">Post an update to the item</option>
+      </select>
+    </div>
+    <div id="am_params"></div>
+    <div class="field"><label>Applies to Organization</label><select id="am_org">${selectOptions(['All',...ORGS], currentOrgFilter!=='All'?currentOrgFilter:'All')}</select></div>
+  `;
+  openModal('New Automation', body, `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Create Automation</button>`);
+
+  function refreshToValueOptions(){
+    const ent = document.getElementById('am_entity').value;
+    const opts = AUTOMATION_ENTITY_FIELDS[ent].options;
+    document.getElementById('am_tovalue').innerHTML = selectOptions(opts, opts[0]);
+  }
+  function refreshParams(){
+    const action = document.getElementById('am_action').value;
+    const box = document.getElementById('am_params');
+    if(action==='create_task'){
+      box.innerHTML = `
+        <div class="field"><label>Task Title</label><input type="text" id="am_p_title" placeholder="e.g. Prepare loan file"></div>
+        <div class="field-row">
+          <div class="field"><label>Due in (days)</label><input type="number" id="am_p_days" value="2" min="0"></div>
+          <div class="field"><label>Assign To</label><input type="text" id="am_p_assigned" placeholder="Rep name"></div>
+        </div>`;
+    } else if(action==='toast'){
+      box.innerHTML = `<div class="field"><label>Reminder Message</label><input type="text" id="am_p_message" placeholder="e.g. Follow up within 24 hours"></div>`;
+    } else {
+      box.innerHTML = `<div class="field"><label>Update Text</label><input type="text" id="am_p_message" placeholder="e.g. Moved to next stage \u2014 notify loan officer"></div>`;
+    }
+  }
+  refreshToValueOptions(); refreshParams();
+  document.getElementById('am_entity').onchange = refreshToValueOptions;
+  document.getElementById('am_action').onchange = refreshParams;
+
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const entity = document.getElementById('am_entity').value;
+    const toValue = document.getElementById('am_tovalue').value;
+    const actionType = document.getElementById('am_action').value;
+    const org = document.getElementById('am_org').value;
+    let params = {};
+    if(actionType==='create_task'){
+      params = { title: document.getElementById('am_p_title').value.trim() || 'Follow up', daysOffset: Number(document.getElementById('am_p_days').value)||0, assignedTo: document.getElementById('am_p_assigned').value.trim() };
+    } else {
+      params = { message: document.getElementById('am_p_message').value.trim() };
+    }
+    DB.automations.push({ id:nextId(), entity, toValue, actionType, params, org, active:true, createdAt:new Date().toISOString() });
+    queueSave(); toast('Automation created'); closeModal(); render();
+  };
+}
+
+// Runs any matching automations when an entity's status/stage field changes.
+function runAutomations(entityType, item, newValue){
+  const rules = (DB.automations||[]).filter(a=>a.active && a.entity===entityType && a.toValue===newValue && (a.org==='All' || a.org===item.org));
+  rules.forEach(a=>{
+    if(a.actionType==='create_task'){
+      const due = new Date();
+      due.setDate(due.getDate() + (a.params.daysOffset||0));
+      DB.tasks.push({
+        id: nextId(), createdAt: new Date().toISOString(),
+        title: a.params.title, dueDate: due.toISOString().slice(0,10),
+        priority: 'Normal', status: 'Open',
+        assignedTo: a.params.assignedTo || item.assignedTo || item.officer || '',
+        relatedTo: item.name || item.loanNumber || item.title || '',
+        org: item.org, comments: [],
+      });
+      toast(`Automation: created task "${a.params.title}"`);
+    } else if(a.actionType==='toast'){
+      toast('Reminder: ' + a.params.message);
+    } else if(a.actionType==='post_update'){
+      item.comments = item.comments || [];
+      item.comments.push({ id: nextId(), text: a.params.message, author: 'Automation', ts: new Date().toISOString() });
+    }
+  });
+  if(rules.length) queueSave();
+}
+
+/* ------------------------------- modal engine ------------------------------------ */
+
+function openModal(title, bodyHtml, footHtml, locked){
+  modalLocked = !!locked;
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-head"><h3>${esc(title)}</h3>${modalLocked ? '' : '<button id="modalClose">&times;</button>'}</div>
+    <div class="modal-body">${bodyHtml}</div>
+    <div class="modal-foot">${footHtml}</div>
+  `;
+  document.getElementById('overlay').classList.add('show');
+  if(!modalLocked) document.getElementById('modalClose').onclick = closeModal;
+}
+function closeModal(){ if(modalLocked) return; document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+
+function selectOptions(list, current){
+  return list.map(o=>`<option value="${esc(o)}" ${o===current?'selected':''}>${esc(o)}</option>`).join('');
+}
+
+/* -------- Updates / comments thread (shared renderer) -------- */
+function updatesHtml(item){
+  const list = (item.comments||[]).slice().reverse();
+  return `
+    <div class="detail-section">
+      <h4>Updates</h4>
+      ${list.length ? list.map(c=>`<div class="update-item"><div class="u-head"><span>${esc(c.author||'You')}</span><span>${fmtDateTime(c.ts)}</span></div>${esc(c.text)}</div>`).join('') : '<div style="color:var(--grey);font-size:11px;">No updates posted yet.</div>'}
+      <div class="update-compose">
+        <textarea id="newUpdateText" placeholder="Post an update\u2026"></textarea>
+        <button class="btn small" id="postUpdateBtn">Post</button>
+      </div>
+    </div>`;
+}
+function bindUpdatesEvents(item){
+  const btn = document.getElementById('postUpdateBtn');
+  if(!btn) return;
+  btn.onclick = ()=>{
+    const ta = document.getElementById('newUpdateText');
+    const text = ta.value.trim();
+    if(!text) return;
+    item.comments = item.comments || [];
+    item.comments.push({ id: nextId(), text, author: currentRep ? currentRep.name : 'LH', ts:new Date().toISOString() });
+    queueSave();
+    ta.value='';
+    toast('Update posted');
+  };
+}
+
+/* -------- Notes & Call Log (leads) -------- */
+const DISPOSITION_DEFINITIONS = [
+  { term:'Connected \u2014 Interested', def:'You reached the business owner/decision-maker and they want to move forward or hear more. Counts as a Conversation.' },
+  { term:'Connected \u2014 Not Interested', def:'You reached the right person, but they declined. Still counts as a Conversation \u2014 it\u2019s a real contact, just a no.' },
+  { term:'Left Voicemail', def:'You reached voicemail and left a message. Does not count as a Conversation.' },
+  { term:'No Answer', def:'The call rang without going to voicemail or being picked up.' },
+  { term:'Callback Scheduled', def:'The prospect asked to be called back at a specific time. Schedule it below \u2014 it creates a CRM reminder AND a real Google Calendar event/invite.' },
+  { term:'Wrong Number', def:'The number reached a different business or person entirely \u2014 not a working line for this lead.' },
+  { term:'Number Disconnected', def:'The line is dead/out of service. Consider marking the lead Lost so it stops getting worked.' },
+  { term:'Can\u2019t Leave VM \u2014 Not Set Up', def:'The call went to a voicemail box that hasn\u2019t been set up, so no message could be left. Different from a normal voicemail \u2014 useful to know this number may not be actively monitored.' },
+  { term:'DNC Requested', def:'The prospect asked not to be contacted again. Mark the lead Lost immediately and never call/text/email that number again \u2014 see the Compliance Notes in Sales Scripts.' },
+];
+const CALENDAR_INSTRUCTIONS = [
+  'Scheduling a callback does two things at once: it creates a reminder on this CRM\u2019s Calendar tab (color-coded by how soon it\u2019s due), and it creates a real event on the Pedison Google Calendar with an invite sent to your email.',
+  'For the calendar invite to reach you, your email must be set on your rep profile \u2014 check Super Admin \u2192 Reps \u2192 Edit if you\u2019re not receiving invites.',
+  'Pick the exact date and time the prospect asked for, not just a day \u2014 the Google Calendar event needs a real time slot, defaulted to 30 minutes.',
+  'If the calendar invite fails to send (e.g. a connection hiccup), the CRM reminder is still created either way \u2014 you won\u2019t lose the callback, just re-check your email if you don\u2019t see the invite.',
+];
+
+function leadNotesHtml(lead){
+  const list = (lead.comments||[]).slice().reverse();
+  const nonCallbackDispositions = DISPOSITIONS.filter(d=>d.id!=='callback_scheduled');
+  const defaultCallback = new Date(Date.now()+86400000);
+  defaultCallback.setHours(9,0,0,0);
+  const defaultCallbackStr = defaultCallback.toISOString().slice(0,16);
+  const timerActive = !!activeCallTimers[lead.id];
+  return `
+    <div class="detail-section">
+      <h4>Outbound Call Stats</h4>
+      <div class="call-stats-row">
+        <div class="call-stat-chip"><div class="csc-num">${lead.calls||0}</div><div class="csc-lbl">Calls</div></div>
+        <div class="call-stat-chip"><div class="csc-num">${lead.texts||0}</div><div class="csc-lbl">Texts</div></div>
+        <div class="call-stat-chip"><div class="csc-num">${lead.emails||0}</div><div class="csc-lbl">Emails</div></div>
+        <div class="call-stat-chip"><div class="csc-num">${lead.conversations||0}</div><div class="csc-lbl">Conversations</div></div>
+        <div class="call-stat-chip"><div class="csc-num">${lead.appointments||0}</div><div class="csc-lbl">Appointments</div></div>
+      </div>
+      <div class="call-timer-box">
+        ${timerActive
+          ? `<span class="call-timer-live">\u25CF Call timer running since ${fmtDateTime(activeCallTimers[lead.id])}</span> <button class="btn small secondary" id="cancelCallTimerBtn">Cancel Timer</button>`
+          : `<button class="btn small secondary" id="startCallTimerBtn">\u23F1 Start Call Timer</button> <span style="font-size:11px;color:var(--grey);">optional \u2014 tracks time spent on this call, added automatically when you log the outcome below</span>`}
+      </div>
+      <div style="font-size:11px;color:var(--grey);font-weight:bold;margin:8px 0 5px;">Log a call \u2014 click the outcome:</div>
+      <div class="disposition-btns">
+        ${nonCallbackDispositions.map(d=>`<button class="disposition-btn ${d.pill}" data-disposition="${d.id}">${esc(d.label)}</button>`).join('')}
+      </div>
+      <div class="callback-schedule-box">
+        <div style="font-size:11px;color:var(--grey);font-weight:bold;margin-bottom:5px;">Schedule a callback \u2014 creates a CRM reminder + Google Calendar invite:</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="datetime-local" id="callbackDateTime" value="${defaultCallbackStr}">
+          <button class="btn small accent" id="logCallbackBtn">Log Callback + Add to Calendar</button>
+        </div>
+      </div>
+      <div class="log-btns" style="margin-top:8px;">
+        <button data-logtype="texts">+ Log Text</button>
+        <button data-logtype="emails">+ Log Email</button>
+        <button data-logtype="appointments">+ Log Appointment Set</button>
+      </div>
+    </div>
+    <div class="detail-section">
+      <h4>Notes &amp; Call Log <span style="font-weight:normal;color:var(--grey);font-size:10px;">(permanent \u2014 entries cannot be edited or removed)</span></h4>
+      ${list.length ? list.map(c=>`<div class="update-item"><div class="u-head"><span>${esc(c.author||'LH')}</span><span>${fmtDateTime(c.ts)}</span></div>${c.disposition ? `<span class="pill ${DISPOSITION_MAP[c.disposition]?DISPOSITION_MAP[c.disposition].pill:'grey'}" style="margin-right:6px;">${esc(DISPOSITION_MAP[c.disposition]?DISPOSITION_MAP[c.disposition].label:c.disposition)}</span>${c.durationSeconds?`<span style="color:var(--grey);font-size:10px;">(${formatDuration(c.durationSeconds)})</span> `:''}` : ''}${esc(c.text)}</div>`).join('') : '<div style="color:var(--grey);font-size:11px;">No notes logged yet.</div>'}
+      <div class="update-compose">
+        <textarea id="newUpdateText" placeholder="Add a note\u2026"></textarea>
+        <button class="btn small" id="postUpdateBtn">Post Note</button>
+      </div>
+    </div>
+    <div class="detail-section">
+      <h4>Call Disposition Definitions &amp; Calendar Instructions</h4>
+      <div class="acc-item">
+        <div class="acc-header" data-acc-toggle="ldef${lead.id}"><span>What each disposition means</span><span class="acc-caret">\u25BC</span></div>
+        <div class="acc-body" id="ldef${lead.id}">
+          <div class="term-grid">${DISPOSITION_DEFINITIONS.map(d=>`<div class="term-item"><span class="term-name">${esc(d.term)}:</span> ${esc(d.def)}</div>`).join('')}</div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" data-acc-toggle="lcal${lead.id}"><span>How the callback \u2192 Google Calendar sync works</span><span class="acc-caret">\u25BC</span></div>
+        <div class="acc-body" id="lcal${lead.id}">
+          ${CALENDAR_INSTRUCTIONS.map(t=>`<p>${esc(t)}</p>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+function bindLeadNotesEvents(lead){
+  bindUpdatesEvents(lead);
+  const labels = {texts:'Logged a text message', emails:'Logged an email', appointments:'Appointment set'};
+  const tags = {texts:'text-log', emails:'email-log', appointments:'appointment'};
+  document.querySelectorAll('[data-logtype]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const key = btn.dataset.logtype;
+      lead[key] = (lead[key]||0) + 1;
+      lead.comments = lead.comments || [];
+      lead.comments.push({ id: nextId(), text: labels[key], author: currentRep ? currentRep.name : 'LH', ts:new Date().toISOString(), tag: tags[key] });
+      queueSave();
+      toast(labels[key]);
+      openLeadDetail(lead.id); // refresh modal in place
+    };
+  });
+  const startCallTimerBtn = document.getElementById('startCallTimerBtn');
+  if(startCallTimerBtn) startCallTimerBtn.onclick = ()=>{
+    activeCallTimers[lead.id] = new Date().toISOString();
+    openLeadDetail(lead.id);
+  };
+  const cancelCallTimerBtn = document.getElementById('cancelCallTimerBtn');
+  if(cancelCallTimerBtn) cancelCallTimerBtn.onclick = ()=>{
+    delete activeCallTimers[lead.id];
+    openLeadDetail(lead.id);
+  };
+
+  document.querySelectorAll('[data-disposition]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const d = DISPOSITION_MAP[btn.dataset.disposition];
+      lead.calls = (lead.calls||0) + 1;
+      if(d.id==='connected_interested' || d.id==='connected_not_interested') lead.conversations = (lead.conversations||0) + 1;
+      lead.comments = lead.comments || [];
+      let durationSeconds = 0;
+      if(activeCallTimers[lead.id]){
+        durationSeconds = Math.round((Date.now() - new Date(activeCallTimers[lead.id]).getTime())/1000);
+        delete activeCallTimers[lead.id];
+      }
+      lead.comments.push({ id: nextId(), text: 'Call disposition logged.' + (durationSeconds?` (${formatDuration(durationSeconds)})`:''), author: currentRep ? currentRep.name : 'LH', ts:new Date().toISOString(), disposition: d.id, durationSeconds });
+
+      if(d.id==='dnc_requested'){
+        toast('Logged \u2014 remember to mark this lead Lost and stop contacting this number.', true);
+      } else if(d.id==='number_disconnected'){
+        toast('Logged \u2014 this number is dead; consider marking the lead Lost.', true);
+      } else {
+        toast('Logged: ' + d.label);
+      }
+      queueSave();
+      openLeadDetail(lead.id); // refresh modal in place
+    };
+  });
+
+  const logCallbackBtn = document.getElementById('logCallbackBtn');
+  if(logCallbackBtn) logCallbackBtn.onclick = async ()=>{
+    const dtInput = document.getElementById('callbackDateTime');
+    const dtVal = dtInput.value; // "YYYY-MM-DDTHH:MM" local time
+    if(!dtVal){ toast('Pick a callback date and time first', true); return; }
+    logCallbackBtn.disabled = true;
+    logCallbackBtn.textContent = 'Scheduling\u2026';
+
+    lead.calls = (lead.calls||0) + 1;
+    lead.comments = lead.comments || [];
+    lead.comments.push({ id: nextId(), text: 'Call disposition logged.', author: currentRep ? currentRep.name : 'LH', ts:new Date().toISOString(), disposition: 'callback_scheduled', callbackAt: dtVal });
+
+    DB.tasks.push({
+      id: nextId(), createdAt: new Date().toISOString(), comments: [],
+      title: 'Callback: ' + lead.name + (lead.company ? ' (' + lead.company + ')' : ''),
+      dueDate: dtVal.slice(0,10), priority:'High', status:'Open',
+      assignedTo: currentRep ? currentRep.name : (lead.assignedTo||''), relatedTo: lead.name, org: lead.org,
+    });
+    queueSave();
+
+    try{
+      const result = await apiCreateCalendarEvent({
+        title: 'Callback: ' + lead.name + (lead.company ? ' \u2014 ' + lead.company : ''),
+        description: 'Pedison USA lead callback.\nPhone: ' + (lead.phone||'') + '\nOrg: ' + (lead.org||''),
+        startDateTime: dtVal,
+        guestEmail: currentRep ? currentRep.email : '',
+      });
+      if(result && result.ok){
+        toast('Callback scheduled \u2014 added to Calendar and CRM reminders');
+      } else {
+        toast('Callback saved in the CRM, but the Google Calendar invite failed: ' + (result && result.error ? result.error : 'unknown error'), true);
+      }
+    }catch(e){
+      toast('Callback saved in the CRM, but couldn\u2019t reach Google Calendar \u2014 check your connection.', true);
+    }
+    openLeadDetail(lead.id); // refresh modal in place
+  };
+}
+
+/* -------- Contact form -------- */
+function contactForm(existing){
+  const c = existing || {firstName:'',middleName:'',lastName:'',company:'',email:'',phone:'',type:CONTACT_TYPES[0],org:currentOrgFilter!=='All'?currentOrgFilter:ORGS[0],source:''};
+  const fn = c.firstName || (c.name ? c.name.split(/\s+/)[0] : '');
+  const ln = c.lastName || (c.name ? c.name.split(/\s+/).slice(1).join(' ') : '');
+  return `
+    <div class="field" style="display:grid;grid-template-columns:1fr 0.8fr 1fr;gap:8px;">
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">First Name</label><input type="text" id="f_first" value="${esc(fn)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">Middle</label><input type="text" id="f_middle" value="${esc(c.middleName)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">Last Name</label><input type="text" id="f_last" value="${esc(ln)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Company</label><input type="text" id="f_company" value="${esc(c.company)}"></div>
+      <div class="field"><label>Type</label><select id="f_type">${selectOptions(CONTACT_TYPES, c.type)}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Email</label><input type="email" id="f_email" value="${esc(c.email)}" placeholder="name@example.com"></div>
+      <div class="field"><label>Phone</label><input type="text" id="f_phone" value="${esc(c.phone)}" placeholder="(XXX) XXX-XXXX"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Organization</label><select id="f_org">${selectOptions(ORGS, c.org)}</select></div>
+      <div class="field"><label>Source</label><input type="text" id="f_source" value="${esc(c.source)}" placeholder="Referral, campaign, etc."></div>
+    </div>
+  `;
+}
+function readContactForm(){
+  const firstName = document.getElementById('f_first').value.trim();
+  const middleName = document.getElementById('f_middle').value.trim();
+  const lastName = document.getElementById('f_last').value.trim();
+  return {
+    firstName, middleName, lastName,
+    name: [firstName, middleName, lastName].filter(Boolean).join(' '),
+    company: document.getElementById('f_company').value.trim(),
+    type: document.getElementById('f_type').value,
+    email: document.getElementById('f_email').value.trim().toLowerCase(),
+    phone: document.getElementById('f_phone').value.trim(),
+    org: document.getElementById('f_org').value,
+    source: document.getElementById('f_source').value.trim(),
+  };
+}
+function addOrEditContact(id){
+  const existing = id ? DB.contacts.find(c=>c.id===id) : null;
+  openModal(existing?'Edit Contact':'Add Contact', contactForm(existing),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = readContactForm();
+    if(!data.name){ toast('Name is required', true); return; }
+    if(existing){ Object.assign(existing, data); toast('Contact updated'); }
+    else { DB.contacts.push({id:nextId(), createdAt:new Date().toISOString(), comments:[], ...data}); toast('Contact added'); }
+    queueSave(); closeModal(); render();
+  };
+}
+
+/* -------- Lead form + detail (with Updates) -------- */
+function leadForm(existing){
+  const l = existing || {firstName:'',middleName:'',lastName:'',company:'',email:'',phone:'',address:'',city:'',state:'',county:'',zip:'',businessType:'',naicsCode:'',sicCode:'',status:'New',channel:LEAD_CHANNELS[0],leadType:LEAD_TYPES[0],source:'',score:0,assignedTo:currentRep?currentRep.name:'',org:currentOrgFilter!=='All'?currentOrgFilter:ORGS[0],requestedProduct:'',requestedAmount:''};
+  const fn = l.firstName || (l.name ? l.name.split(/\s+/)[0] : '');
+  const ln = l.lastName || (l.name ? l.name.split(/\s+/).slice(1).join(' ') : '');
+  return `
+    <div class="field" style="display:grid;grid-template-columns:1fr 0.8fr 1fr;gap:8px;">
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">First Name <span style="font-weight:normal;">(who to call)</span></label><input type="text" id="f_first" value="${esc(fn)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">Middle</label><input type="text" id="f_middle" value="${esc(l.middleName)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">Last Name</label><input type="text" id="f_last" value="${esc(ln)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Company</label><input type="text" id="f_company" value="${esc(l.company)}"></div>
+      <div class="field"><label>Email</label><input type="email" id="f_email" value="${esc(l.email)}" placeholder="name@example.com"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Phone</label><input type="text" id="f_phone" value="${esc(l.phone)}" placeholder="(XXX) XXX-XXXX"></div>
+      <div class="field"><label>Channel</label><select id="f_channel">${selectOptions(LEAD_CHANNELS, l.channel)}</select></div>
+    </div>
+    <div class="field"><label>Lead Type <span style="font-weight:normal;color:var(--grey);">(source category for KPI reporting)</span></label><select id="f_leadtype">${selectOptions(LEAD_TYPES, l.leadType||LEAD_TYPES[0])}</select></div>
+    <div class="field"><label>Street Address</label><input type="text" id="f_address" value="${esc(l.address)}"></div>
+    <div class="field" style="display:grid;grid-template-columns:1.4fr 0.6fr 0.9fr 0.7fr;gap:8px;">
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">City</label><input type="text" id="f_city" value="${esc(l.city)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">State</label><input type="text" id="f_state" value="${esc(l.state)}" maxlength="2" style="text-transform:uppercase;"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">County</label><input type="text" id="f_county" value="${esc(l.county)}"></div>
+      <div><label style="display:block;font-size:11px;color:var(--grey);margin-bottom:3px;font-weight:bold;">Zip</label><input type="text" id="f_zip" value="${esc(l.zip)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Status</label><select id="f_status">${selectOptions(LEAD_STATUSES, l.status)}</select></div>
+      <div class="field"><label>Score (0-100)</label><input type="number" id="f_score" value="${l.score||0}" min="0" max="100"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Assigned To</label><input type="text" id="f_assigned" value="${esc(l.assignedTo)}"></div>
+      <div class="field"><label>Requested Amount</label><input type="number" id="f_amount" value="${l.requestedAmount||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Requested Product</label><input type="text" id="f_product" value="${esc(l.requestedProduct)}" placeholder="Bridge Loan, Credit Repair, etc."></div>
+      <div class="field"><label>Organization</label><select id="f_org">${selectOptions(ORGS, l.org)}</select></div>
+    </div>
+    <div class="field"><label>Business Type / Industry</label><input type="text" id="f_bustype" value="${esc(l.businessType)}" placeholder="e.g. Lawn &amp; Garden Services"></div>
+    <div class="field-row">
+      <div class="field"><label>NAICS Code</label><input type="text" id="f_naics" value="${esc(l.naicsCode)}"></div>
+      <div class="field"><label>SIC Code</label><input type="text" id="f_sic" value="${esc(l.sicCode)}"></div>
+    </div>
+    <div class="field"><label>Source Detail</label><input type="text" id="f_source" value="${esc(l.source)}" placeholder="Campaign name, filing batch, etc."></div>
+  `;
+}
+function readLeadForm(){
+  const firstName = document.getElementById('f_first').value.trim();
+  const middleName = document.getElementById('f_middle').value.trim();
+  const lastName = document.getElementById('f_last').value.trim();
+  return {
+    firstName, middleName, lastName,
+    name: [firstName, middleName, lastName].filter(Boolean).join(' '),
+    company: document.getElementById('f_company').value.trim(),
+    email: document.getElementById('f_email').value.trim().toLowerCase(),
+    phone: document.getElementById('f_phone').value.trim(),
+    address: document.getElementById('f_address').value.trim(),
+    city: document.getElementById('f_city').value.trim(),
+    state: document.getElementById('f_state').value.trim().toUpperCase(),
+    county: document.getElementById('f_county').value.trim(),
+    zip: document.getElementById('f_zip').value.trim(),
+    status: document.getElementById('f_status').value,
+    channel: document.getElementById('f_channel').value,
+    leadType: document.getElementById('f_leadtype').value,
+    score: Number(document.getElementById('f_score').value)||0,
+    assignedTo: document.getElementById('f_assigned').value.trim(),
+    requestedProduct: document.getElementById('f_product').value.trim(),
+    requestedAmount: document.getElementById('f_amount').value,
+    org: document.getElementById('f_org').value,
+    businessType: document.getElementById('f_bustype').value.trim(),
+    naicsCode: document.getElementById('f_naics').value.trim(),
+    sicCode: document.getElementById('f_sic').value.trim(),
+    source: document.getElementById('f_source').value.trim(),
+  };
+}
+function addOrEditLead(id){
+  const existing = id ? DB.leads.find(l=>l.id===id) : null;
+  openModal(existing?'Edit Lead':'Add Lead', leadForm(existing),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = readLeadForm();
+    if(!data.name){ toast('Name is required', true); return; }
+    const oldStatus = existing ? existing.status : null;
+    if(existing){ Object.assign(existing, data); toast('Lead updated'); }
+    else { DB.leads.push({id:nextId(), createdAt:new Date().toISOString(), comments:[], calls:0, texts:0, emails:0, conversations:0, ...data}); toast('Lead added'); }
+    const finalItem = existing || DB.leads[DB.leads.length-1];
+    if(oldStatus!==data.status) runAutomations('lead', finalItem, data.status);
+    queueSave(); closeModal(); render();
+  };
+}
+
+function openLeadDetail(id){
+  const lead = DB.leads.find(l=>l.id===id);
+  if(!lead) return;
+  const fn = lead.firstName || (lead.name ? lead.name.split(/\s+/)[0] : '');
+  const mn = lead.middleName || '';
+  const ln = lead.lastName || (lead.name ? lead.name.split(/\s+/).slice(1).join(' ') : '');
+  const cityStateZip = [lead.city, lead.state].filter(Boolean).join(', ') + (lead.zip ? ' ' + lead.zip : '');
+  openModal('Lead \u2014 ' + lead.name, `
+    <div class="detail-section">
+      <h4>Who to Call</h4>
+      <div class="kv"><div class="k">First Name</div><div>${esc(fn)||'\u2014'}</div></div>
+      ${mn ? `<div class="kv"><div class="k">Middle Name</div><div>${esc(mn)}</div></div>` : ''}
+      <div class="kv"><div class="k">Last Name</div><div>${esc(ln)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Phone</div><div>${formatPhone(lead.phone)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Email</div><div>${formatEmail(lead.email)||'\u2014'}</div></div>
+    </div>
+    <div class="detail-section">
+      <h4>Address</h4>
+      <div class="kv"><div class="k">Street</div><div>${esc(lead.address)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">City / State / Zip</div><div>${cityStateZip.trim()||'\u2014'}</div></div>
+      <div class="kv"><div class="k">County</div><div>${esc(lead.county)||'\u2014'}</div></div>
+    </div>
+    <div class="detail-section">
+      <h4>Summary</h4>
+      <div class="kv"><div class="k">Company</div><div>${esc(lead.company)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Business Type</div><div>${esc(lead.businessType)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">NAICS Code</div><div>${esc(lead.naicsCode)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">SIC Code</div><div>${esc(lead.sicCode)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Channel</div><div>${esc(lead.channel)}</div></div>
+      <div class="kv"><div class="k">Lead Type</div><div>${esc(lead.leadType)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Status</div><div><span class="pill ${LEAD_STATUS_PILL[lead.status]||'grey'}">${lead.status}</span></div></div>
+      <div class="kv"><div class="k">Score</div><div>${lead.score||0}</div></div>
+      <div class="kv"><div class="k">Assigned To</div><div>${esc(lead.assignedTo)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Requested</div><div>${lead.requestedProduct?esc(lead.requestedProduct):'\u2014'} ${lead.requestedAmount?money(lead.requestedAmount):''}</div></div>
+      <div class="kv"><div class="k">Organization</div><div>${esc(lead.org)}</div></div>
+    </div>
+    ${leadNotesHtml(lead)}
+    <div class="detail-section">
+      <h4>Sales Scripts, Objections &amp; Definitions</h4>
+      ${scriptsGuideHtml(true).replace(/\{FirstName\}/g, esc(fn||'there')).replace(/\{Company\}/g, esc(lead.company||'the business'))}
+    </div>
+  `, `${isAdmin() ? '<button class="btn danger" id="delLeadBtn">Delete</button>' : ''}<button class="btn secondary" id="editLeadBtn">Edit Details</button>${lead.status!=='Converted'?'<button class="btn accent" id="convertLeadBtn">Convert to Loan</button>':''}<button class="btn secondary" id="closeBtn">Close</button>`);
+
+  bindLeadNotesEvents(lead);
+  document.getElementById('closeBtn').onclick = ()=>{ closeModal(); render(); };
+  const modalCloseX = document.getElementById('modalClose');
+  if(modalCloseX) modalCloseX.onclick = ()=>{ closeModal(); render(); };
+  const delLeadBtn = document.getElementById('delLeadBtn');
+  if(delLeadBtn) delLeadBtn.onclick = ()=>{
+    if(confirm('Delete this lead?')){ DB.leads = DB.leads.filter(l=>l.id!==lead.id); queueSave(); toast('Lead deleted'); closeModal(); render(); }
+  };
+  document.getElementById('editLeadBtn').onclick = ()=>addOrEditLead(lead.id);
+  const convertBtn = document.getElementById('convertLeadBtn');
+  if(convertBtn) convertBtn.onclick = ()=>convertLead(lead.id);
+}
+
+function convertLead(id){
+  const lead = DB.leads.find(l=>l.id===id);
+  if(!lead) return;
+  openModal('Convert Lead to Loan File', `
+    <p style="margin-top:0;font-size:12px;color:var(--grey);">Creates a contact (if needed) and opens a new loan file at the first pipeline stage. The lead stays linked to its original campaign for attribution.</p>
+    <div class="field-row">
+      <div class="field"><label>Product Type</label><select id="f_product">${selectOptions(LOAN_PRODUCTS, lead.requestedProduct && LOAN_PRODUCTS.includes(lead.requestedProduct) ? lead.requestedProduct : LOAN_PRODUCTS[0])}</select></div>
+      <div class="field"><label>Requested Amount</label><input type="number" id="f_amount" value="${lead.requestedAmount||''}"></div>
+    </div>
+  `, `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="convertBtn">Convert</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('convertBtn').onclick = ()=>{
+    let contact = DB.contacts.find(c=>c.email && c.email===lead.email && lead.email);
+    if(!contact){
+      contact = { id: nextId(), createdAt:new Date().toISOString(), comments:[],
+        name: lead.name, firstName: lead.firstName, middleName: lead.middleName, lastName: lead.lastName,
+        company: lead.company, email: lead.email, phone: lead.phone,
+        type: 'Borrower', org: lead.org, source: lead.source || lead.channel };
+      DB.contacts.push(contact);
+    }
+    const loanNumber = 'PED-' + new Date().getFullYear() + '-' + Math.floor(100000+Math.random()*899999);
+    const loan = {
+      id: nextId(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), comments:[],
+      loanNumber, contactId: contact.id,
+      productType: document.getElementById('f_product').value,
+      requestedAmount: document.getElementById('f_amount').value,
+      approvedAmount:'', rate:'', term:'', officer:'',
+      org: lead.org, stage: LOAN_STAGES[0],
+      stageHistory: [{stage:LOAN_STAGES[0], enteredAt:new Date().toISOString()}],
+    };
+    DB.loans.push(loan);
+    lead.status = 'Converted';
+    lead.convertedLoanId = loan.id;
+    runAutomations('lead', lead, 'Converted');
+    queueSave();
+    toast(`Converted \u2014 loan file ${loanNumber} created`);
+    closeModal();
+    currentTab = 'loans';
+    render();
+  };
+}
+
+/* -------- Loan form / detail -------- */
+function loanForm(existing){
+  const l = existing || {contactId:'', productType:LOAN_PRODUCTS[0], requestedAmount:'', approvedAmount:'', rate:'', term:'', officer:currentRep?currentRep.name:'', org:currentOrgFilter!=='All'?currentOrgFilter:ORGS[0]};
+  const contactOptions = DB.contacts.length
+    ? DB.contacts.map(c=>`<option value="${c.id}" ${c.id===l.contactId?'selected':''}>${esc(c.name)}${c.company?' \u2014 '+esc(c.company):''}</option>`).join('')
+    : `<option value="">No contacts yet \u2014 add one first</option>`;
+  return `
+    <div class="field"><label>Borrower / Contact</label><select id="f_contact">${contactOptions}</select></div>
+    <div class="field-row">
+      <div class="field"><label>Product Type</label><select id="f_product">${selectOptions(LOAN_PRODUCTS, l.productType)}</select></div>
+      <div class="field"><label>Organization</label><select id="f_org">${selectOptions(ORGS, l.org)}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Requested Amount</label><input type="number" id="f_reqamt" value="${l.requestedAmount||''}"></div>
+      <div class="field"><label>Approved Amount</label><input type="number" id="f_appramt" value="${l.approvedAmount||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Rate (%)</label><input type="number" step="0.01" id="f_rate" value="${l.rate||''}"></div>
+      <div class="field"><label>Term (months)</label><input type="number" id="f_term" value="${l.term||''}"></div>
+    </div>
+    <div class="field"><label>Loan Officer</label><input type="text" id="f_officer" value="${esc(l.officer)}"></div>
+  `;
+}
+function readLoanForm(){
+  return {
+    contactId: document.getElementById('f_contact').value,
+    productType: document.getElementById('f_product').value,
+    org: document.getElementById('f_org').value,
+    requestedAmount: document.getElementById('f_reqamt').value,
+    approvedAmount: document.getElementById('f_appramt').value,
+    rate: document.getElementById('f_rate').value,
+    term: document.getElementById('f_term').value,
+    officer: document.getElementById('f_officer').value.trim(),
+  };
+}
+function addLoan(){
+  if(DB.contacts.length===0){ toast('Add a contact first, or convert a lead.', true); return; }
+  openModal('New Loan File', loanForm(null),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Create</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = readLoanForm();
+    if(!data.contactId){ toast('Select a contact', true); return; }
+    const loanNumber = 'PED-' + new Date().getFullYear() + '-' + Math.floor(100000+Math.random()*899999);
+    DB.loans.push({
+      id:nextId(), createdAt:new Date().toISOString(), updatedAt:new Date().toISOString(), comments:[],
+      loanNumber, stage:LOAN_STAGES[0],
+      stageHistory:[{stage:LOAN_STAGES[0], enteredAt:new Date().toISOString()}],
+      ...data
+    });
+    queueSave(); toast('Loan file created'); closeModal(); render();
+  };
+}
+
+function loanDetail(id){
+  const loan = DB.loans.find(l=>l.id===id);
+  if(!loan) return;
+  const contact = DB.contacts.find(c=>c.id===loan.contactId);
+  const history = (loan.stageHistory||[]).slice().reverse();
+  openModal(loan.loanNumber, `
+    <div class="detail-section">
+      <h4>Loan Summary</h4>
+      <div class="kv"><div class="k">Borrower</div><div>${esc(contact?contact.name:'\u2014')}</div></div>
+      <div class="kv"><div class="k">Product</div><div>${esc(loan.productType)}</div></div>
+      <div class="kv"><div class="k">Organization</div><div>${esc(loan.org)}</div></div>
+      <div class="kv"><div class="k">Requested</div><div>${money(loan.requestedAmount)}</div></div>
+      <div class="kv"><div class="k">Approved</div><div>${loan.approvedAmount?money(loan.approvedAmount):'\u2014'}</div></div>
+      <div class="kv"><div class="k">Rate / Term</div><div>${loan.rate?loan.rate+'%':'\u2014'} ${loan.term?'/ '+loan.term+' mo':''}</div></div>
+      <div class="kv"><div class="k">Loan Officer</div><div>${esc(loan.officer)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Current Stage</div><div><span class="pill blue">${esc(loan.stage)}</span></div></div>
+    </div>
+    <div class="detail-section">
+      <h4>Move Stage</h4>
+      <div class="stage-btns">${LOAN_STAGES.map(s=>`<button class="btn small ${s===loan.stage?'':'secondary'}" data-move-stage="${s}">${s}</button>`).join('')}</div>
+    </div>
+    <div class="detail-section">
+      <h4>Stage History</h4>
+      ${history.map(h=>`<div class="activity-item"><div class="ts">${fmtDateTime(h.enteredAt)}</div>Entered: ${esc(h.stage)}</div>`).join('')}
+    </div>
+    ${updatesHtml(loan)}
+  `, `${isAdmin() ? '<button class="btn danger" id="delLoanBtn">Delete Loan File</button>' : ''}<button class="btn secondary" id="editLoanBtn">Edit Details</button><button class="btn secondary" id="closeBtn">Close</button>`);
+
+  bindUpdatesEvents(loan);
+  document.getElementById('closeBtn').onclick = ()=>{ closeModal(); render(); };
+  const modalCloseX = document.getElementById('modalClose');
+  if(modalCloseX) modalCloseX.onclick = ()=>{ closeModal(); render(); };
+  const delLoanBtn = document.getElementById('delLoanBtn');
+  if(delLoanBtn) delLoanBtn.onclick = ()=>{
+    if(confirm('Delete this loan file? This cannot be undone.')){
+      DB.loans = DB.loans.filter(l=>l.id!==loan.id);
+      queueSave(); toast('Loan file deleted'); closeModal(); render();
+    }
+  };
+  document.getElementById('editLoanBtn').onclick = ()=>{
+    openModal('Edit Loan \u2014 ' + loan.loanNumber, loanForm(loan),
+      `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+    document.getElementById('cancelBtn').onclick = closeModal;
+    document.getElementById('saveBtn').onclick = ()=>{
+      Object.assign(loan, readLoanForm());
+      loan.updatedAt = new Date().toISOString();
+      queueSave(); toast('Loan updated'); closeModal(); render();
+    };
+  };
+  document.querySelectorAll('[data-move-stage]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const newStage = btn.dataset.moveStage;
+      if(newStage===loan.stage) return;
+      loan.stage = newStage;
+      loan.updatedAt = new Date().toISOString();
+      if(newStage==='Funded') loan.fundedAt = new Date().toISOString();
+      loan.stageHistory = loan.stageHistory || [];
+      loan.stageHistory.push({stage:newStage, enteredAt:new Date().toISOString()});
+      runAutomations('loan', loan, newStage);
+      queueSave(); toast('Moved to ' + newStage); closeModal(); render();
+    };
+  });
+}
+
+/* -------- Task form + detail -------- */
+function taskForm(existing){
+  const t = existing || {title:'',dueDate:'',priority:'Normal',status:'Open',assignedTo:currentRep?currentRep.name:'',relatedTo:'',org:currentOrgFilter!=='All'?currentOrgFilter:ORGS[0]};
+  return `
+    <div class="field"><label>Title</label><input type="text" id="f_title" value="${esc(t.title)}"></div>
+    <div class="field-row">
+      <div class="field"><label>Due Date</label><input type="date" id="f_due" value="${t.dueDate||''}"></div>
+      <div class="field"><label>Priority</label><select id="f_priority">${selectOptions(TASK_PRIORITIES, t.priority)}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Status</label><select id="f_status">${selectOptions(TASK_STATUSES, t.status)}</select></div>
+      <div class="field"><label>Assigned To</label><input type="text" id="f_assigned" value="${esc(t.assignedTo)}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Related To</label><input type="text" id="f_related" value="${esc(t.relatedTo)}" placeholder="Lead/loan/contact name"></div>
+      <div class="field"><label>Organization</label><select id="f_org">${selectOptions(ORGS, t.org)}</select></div>
+    </div>
+  `;
+}
+function readTaskForm(){
+  return {
+    title: document.getElementById('f_title').value.trim(),
+    dueDate: document.getElementById('f_due').value,
+    priority: document.getElementById('f_priority').value,
+    status: document.getElementById('f_status').value,
+    assignedTo: document.getElementById('f_assigned').value.trim(),
+    relatedTo: document.getElementById('f_related').value.trim(),
+    org: document.getElementById('f_org').value,
+  };
+}
+function addOrEditTask(id){
+  const existing = id ? DB.tasks.find(t=>t.id===id) : null;
+  openModal(existing?'Edit Task':'Add Task', taskForm(existing),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = readTaskForm();
+    if(!data.title){ toast('Title is required', true); return; }
+    const oldStatus = existing ? existing.status : null;
+    if(existing){ Object.assign(existing, data); toast('Task updated'); }
+    else { DB.tasks.push({id:nextId(), createdAt:new Date().toISOString(), comments:[], ...data}); toast('Task added'); }
+    const finalItem = existing || DB.tasks[DB.tasks.length-1];
+    if(oldStatus!==data.status) runAutomations('task', finalItem, data.status);
+    queueSave(); closeModal(); render();
+  };
+}
+function openTaskDetail(id){
+  const t = DB.tasks.find(t=>t.id===id);
+  if(!t) return;
+  openModal('Task \u2014 ' + t.title, `
+    <div class="detail-section">
+      <h4>Summary</h4>
+      <div class="kv"><div class="k">Due</div><div>${fmtDate(t.dueDate)}</div></div>
+      <div class="kv"><div class="k">Priority</div><div><span class="pill ${TASK_PRIORITY_PILL[t.priority]||'grey'}">${t.priority}</span></div></div>
+      <div class="kv"><div class="k">Status</div><div><span class="pill ${TASK_STATUS_PILL[t.status]||'grey'}">${t.status}</span></div></div>
+      <div class="kv"><div class="k">Assigned To</div><div>${esc(t.assignedTo)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Related To</div><div>${esc(t.relatedTo)||'\u2014'}</div></div>
+      <div class="kv"><div class="k">Organization</div><div>${esc(t.org)}</div></div>
+    </div>
+    ${updatesHtml(t)}
+  `, `${isAdmin() ? '<button class="btn danger" id="delTaskBtn">Delete</button>' : ''}<button class="btn secondary" id="editTaskBtn">Edit Details</button>${t.status!=='Complete'?'<button class="btn" id="completeTaskBtn">Mark Complete</button>':''}<button class="btn secondary" id="closeBtn">Close</button>`);
+
+  bindUpdatesEvents(t);
+  document.getElementById('closeBtn').onclick = ()=>{ closeModal(); render(); };
+  const modalCloseX = document.getElementById('modalClose');
+  if(modalCloseX) modalCloseX.onclick = ()=>{ closeModal(); render(); };
+  const delTaskBtn = document.getElementById('delTaskBtn');
+  if(delTaskBtn) delTaskBtn.onclick = ()=>{
+    if(confirm('Delete this task?')){ DB.tasks = DB.tasks.filter(x=>x.id!==t.id); queueSave(); toast('Task deleted'); closeModal(); render(); }
+  };
+  document.getElementById('editTaskBtn').onclick = ()=>addOrEditTask(t.id);
+  const cb = document.getElementById('completeTaskBtn');
+  if(cb) cb.onclick = ()=>{
+    t.status='Complete';
+    runAutomations('task', t, 'Complete');
+    queueSave(); toast('Task completed'); closeModal(); render();
+  };
+}
+
+/* -------- Campaign form -------- */
+function campaignForm(existing){
+  const c = existing || {name:'',channel:CAMPAIGN_CHANNELS[0],status:'Draft',sent:0,opened:0,replied:0,leadsCreated:0,org:currentOrgFilter!=='All'?currentOrgFilter:ORGS[0]};
+  return `
+    <div class="field"><label>Campaign Name</label><input type="text" id="f_name" value="${esc(c.name)}"></div>
+    <div class="field-row">
+      <div class="field"><label>Channel</label><select id="f_channel">${selectOptions(CAMPAIGN_CHANNELS, c.channel)}</select></div>
+      <div class="field"><label>Status</label><select id="f_status">${selectOptions(CAMPAIGN_STATUSES, c.status)}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Sent</label><input type="number" id="f_sent" value="${c.sent||0}"></div>
+      <div class="field"><label>Opened</label><input type="number" id="f_opened" value="${c.opened||0}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Replied</label><input type="number" id="f_replied" value="${c.replied||0}"></div>
+      <div class="field"><label>Leads Created</label><input type="number" id="f_leads" value="${c.leadsCreated||0}"></div>
+    </div>
+    <div class="field"><label>Organization</label><select id="f_org">${selectOptions(ORGS, c.org)}</select></div>
+  `;
+}
+function readCampaignForm(){
+  return {
+    name: document.getElementById('f_name').value.trim(),
+    channel: document.getElementById('f_channel').value,
+    status: document.getElementById('f_status').value,
+    sent: Number(document.getElementById('f_sent').value)||0,
+    opened: Number(document.getElementById('f_opened').value)||0,
+    replied: Number(document.getElementById('f_replied').value)||0,
+    leadsCreated: Number(document.getElementById('f_leads').value)||0,
+    org: document.getElementById('f_org').value,
+  };
+}
+function addOrEditCampaign(id){
+  const existing = id ? DB.campaigns.find(c=>c.id===id) : null;
+  openModal(existing?'Edit Campaign':'Add Campaign', campaignForm(existing),
+    `<button class="btn secondary" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button>`);
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('saveBtn').onclick = ()=>{
+    const data = readCampaignForm();
+    if(!data.name){ toast('Campaign name is required', true); return; }
+    if(existing){ Object.assign(existing, data); toast('Campaign updated'); }
+    else { DB.campaigns.push({id:nextId(), createdAt:new Date().toISOString(), comments:[], ...data}); toast('Campaign added'); }
+    queueSave(); closeModal(); render();
+  };
+}
+
+/* ---------------------- inline status popover (Monday-style) --------------------- */
+
+function closeStatusPop(){
+  const existing = document.getElementById('statusPop');
+  if(existing) existing.remove();
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('[data-statuspop]') && !e.target.closest('#statusPop')) closeStatusPop();
+});
+
+// Delegated so it works for accordions rendered on the Sales Scripts tab
+// AND for the copy re-rendered fresh inside every lead popup, without
+// needing to rebind after each render/modal open.
+document.addEventListener('click', (e)=>{
+  const header = e.target.closest('[data-acc-toggle]');
+  if(!header) return;
+  const body = document.getElementById(header.dataset.accToggle);
+  if(!body) return;
+  const opening = !body.classList.contains('open');
+  body.classList.toggle('open', opening);
+  header.classList.toggle('open', opening);
+});
+
+function openStatusPop(anchor, kind, id){
+  closeStatusPop();
+  let options, onPick, colorMap;
+  if(kind==='lead'){
+    const item = DB.leads.find(l=>l.id===id);
+    options = LEAD_STATUSES; colorMap = LEAD_STATUS_PILL;
+    onPick = (val)=>{ item.status=val; runAutomations('lead', item, val); queueSave(); toast('Status set to '+val); render(); };
+  } else if(kind==='task'){
+    const item = DB.tasks.find(t=>t.id===id);
+    options = TASK_STATUSES; colorMap = TASK_STATUS_PILL;
+    onPick = (val)=>{ item.status=val; runAutomations('task', item, val); queueSave(); toast('Status set to '+val); render(); };
+  } else if(kind==='loanstage'){
+    const item = DB.loans.find(l=>l.id===id);
+    options = LOAN_STAGES; colorMap = null;
+    onPick = (val)=>{
+      item.stage=val; item.updatedAt=new Date().toISOString();
+      if(val==='Funded') item.fundedAt = new Date().toISOString();
+      item.stageHistory = item.stageHistory || [];
+      item.stageHistory.push({stage:val, enteredAt:new Date().toISOString()});
+      runAutomations('loan', item, val);
+      queueSave(); toast('Stage set to '+val); render();
+    };
+  }
+  const pop = document.createElement('div');
+  pop.className = 'status-pop';
+  pop.id = 'statusPop';
+  pop.innerHTML = options.map(o=>`<div class="opt" data-pick="${esc(o)}">${o}</div>`).join('');
+  document.body.appendChild(pop);
+  const rect = anchor.getBoundingClientRect();
+  pop.style.top = (window.scrollY + rect.bottom + 4) + 'px';
+  pop.style.left = (window.scrollX + rect.left) + 'px';
+  pop.querySelectorAll('[data-pick]').forEach(o=>{ o.onclick=(ev)=>{ ev.stopPropagation(); onPick(o.dataset.pick); }; });
+}
+
+/* ------------------------------ event binding ------------------------------------ */
+
+function bindPageEvents(){
+  const lbMetricSelect = document.getElementById('lbMetricSelect');
+  if(lbMetricSelect) lbMetricSelect.onchange = ()=>{ leaderboardMetric = lbMetricSelect.value; render(); };
+  const kpiPeriodSelect = document.getElementById('kpiPeriodSelect');
+  if(kpiPeriodSelect) kpiPeriodSelect.onchange = ()=>{ kpiPeriod = kpiPeriodSelect.value; render(); };
+  document.querySelectorAll('[data-dashscope]').forEach(b=>{
+    b.onclick = ()=>{ dashboardScope = b.dataset.dashscope; render(); };
+  });
+
+  const clockInBtn = document.getElementById('clockInBtn');
+  if(clockInBtn) clockInBtn.onclick = ()=>{
+    if(!currentRep) return;
+    DB.timeclock.push({ id: nextId(), createdAt: new Date().toISOString(), repName: currentRep.name, org: currentRep.org, clockIn: new Date().toISOString(), clockOut: '', date: new Date().toISOString().slice(0,10) });
+    queueSave(); toast('Clocked in'); render();
+  };
+  const clockOutBtn = document.getElementById('clockOutBtn');
+  if(clockOutBtn) clockOutBtn.onclick = ()=>{
+    if(!currentRep) return;
+    const active = activeClockEntry(currentRep.name);
+    if(active){ active.clockOut = new Date().toISOString(); queueSave(); toast('Clocked out'); render(); }
+  };
+
+  // view switch buttons (Table/Kanban/Timeline)
+  document.querySelectorAll('[data-viewswitch]').forEach(b=>{
+    b.onclick = ()=>{
+      const [tab, v] = b.dataset.viewswitch.split(':');
+      viewState[tab] = v; render();
+    };
+  });
+  // group-by selects
+  document.querySelectorAll('[data-groupselect]').forEach(sel=>{
+    sel.onchange = ()=>{ groupState[sel.dataset.groupselect] = sel.value; render(); };
+  });
+  // collapsible group headers
+  document.querySelectorAll('[data-grouptoggle]').forEach(row=>{
+    row.onclick = ()=>{
+      const gk = row.dataset.grouptoggle;
+      collapsedGroups[gk] = !collapsedGroups[gk];
+      render();
+    };
+  });
+  // inline status pills
+  document.querySelectorAll('[data-statuspop]').forEach(p=>{
+    p.onclick = (e)=>{
+      e.stopPropagation();
+      const [kind, id] = p.dataset.statuspop.split(':');
+      openStatusPop(p, kind, id);
+    };
+  });
+
+  // Leads
+  const leadSearchFieldSelect = document.getElementById('leadSearchFieldSelect');
+  if(leadSearchFieldSelect) leadSearchFieldSelect.onchange = ()=>{ leadSearchField = leadSearchFieldSelect.value; render(); };
+  const leadSearch = document.getElementById('leadSearch');
+  if(leadSearch) leadSearch.oninput = ()=>{
+    const val = leadSearch.value;
+    viewLeads._q = val;
+    document.getElementById('mainArea').innerHTML = viewLeads();
+    bindPageEvents();
+    const freshInput = document.getElementById('leadSearch');
+    if(freshInput){ freshInput.focus(); freshInput.setSelectionRange(val.length, val.length); }
+  };
+  const addLeadBtn = document.getElementById('addLeadBtn');
+  if(addLeadBtn) addLeadBtn.onclick = ()=>addOrEditLead(null);
+  const showAllLeadsBtn = document.getElementById('showAllLeadsBtn');
+  if(showAllLeadsBtn) showAllLeadsBtn.onclick = ()=>{ viewLeads._showAll = !viewLeads._showAll; render(); };
+  document.querySelectorAll('[data-open-lead]').forEach(b=>b.onclick=()=>openLeadDetail(b.dataset.openLead));
+  document.querySelectorAll('[data-lead]').forEach(el=>el.onclick=()=>openLeadDetail(el.dataset.lead));
+  document.querySelectorAll('[data-convert-lead]').forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); convertLead(b.dataset.convertLead); });
+  document.querySelectorAll('[data-del-lead]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    if(confirm('Delete this lead?')){ DB.leads = DB.leads.filter(l=>l.id!==b.dataset.delLead); queueSave(); toast('Lead deleted'); render(); }
+  });
+
+  // Contacts
+  const contactSearch = document.getElementById('contactSearch');
+  if(contactSearch) contactSearch.oninput = ()=>{
+    const val = contactSearch.value;
+    viewContacts._q = val;
+    document.getElementById('mainArea').innerHTML = viewContacts();
+    bindPageEvents();
+    const freshInput = document.getElementById('contactSearch');
+    if(freshInput){ freshInput.focus(); freshInput.setSelectionRange(val.length, val.length); }
+  };
+  const addContactBtn = document.getElementById('addContactBtn');
+  if(addContactBtn) addContactBtn.onclick = ()=>addOrEditContact(null);
+  document.querySelectorAll('[data-edit-contact]').forEach(b=>b.onclick=()=>addOrEditContact(b.dataset.editContact));
+  document.querySelectorAll('[data-del-contact]').forEach(b=>b.onclick=()=>{
+    if(confirm('Delete this contact?')){ DB.contacts = DB.contacts.filter(c=>c.id!==b.dataset.delContact); queueSave(); toast('Contact deleted'); render(); }
+  });
+
+  // Loans
+  const addLoanBtn = document.getElementById('addLoanBtn');
+  if(addLoanBtn) addLoanBtn.onclick = addLoan;
+  document.querySelectorAll('[data-loan]').forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); loanDetail(el.dataset.loan); });
+
+  // Tasks
+  const addTaskBtn = document.getElementById('addTaskBtn');
+  if(addTaskBtn) addTaskBtn.onclick = ()=>addOrEditTask(null);
+  document.querySelectorAll('[data-open-task]').forEach(b=>b.onclick=()=>openTaskDetail(b.dataset.openTask));
+  document.querySelectorAll('[data-task]').forEach(el=>el.onclick=()=>openTaskDetail(el.dataset.task));
+  document.querySelectorAll('[data-del-task]').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    if(confirm('Delete this task?')){ DB.tasks = DB.tasks.filter(t=>t.id!==b.dataset.delTask); queueSave(); toast('Task deleted'); render(); }
+  });
+
+  // Campaigns
+  const addCampaignBtn = document.getElementById('addCampaignBtn');
+  if(addCampaignBtn) addCampaignBtn.onclick = ()=>addOrEditCampaign(null);
+  document.querySelectorAll('[data-edit-campaign]').forEach(b=>b.onclick=()=>addOrEditCampaign(b.dataset.editCampaign));
+  document.querySelectorAll('[data-del-campaign]').forEach(b=>b.onclick=()=>{
+    if(confirm('Delete this campaign?')){ DB.campaigns = DB.campaigns.filter(c=>c.id!==b.dataset.delCampaign); queueSave(); toast('Campaign deleted'); render(); }
+  });
+
+  // Automations
+  const addAutomationBtn = document.getElementById('addAutomationBtn');
+  if(addAutomationBtn) addAutomationBtn.onclick = addAutomationModal;
+  document.querySelectorAll('[data-toggle-automation]').forEach(cb=>{
+    cb.onchange = ()=>{
+      const a = DB.automations.find(a=>a.id===cb.dataset.toggleAutomation);
+      if(a){ a.active = cb.checked; queueSave(); toast(a.active?'Automation enabled':'Automation disabled'); }
+    };
+  });
+  document.querySelectorAll('[data-del-automation]').forEach(b=>b.onclick=()=>{
+    if(confirm('Delete this automation?')){ DB.automations = DB.automations.filter(a=>a.id!==b.dataset.delAutomation); queueSave(); toast('Automation deleted'); render(); }
+  });
+
+  // Reps
+  const addRepBtn = document.getElementById('addRepBtn');
+  if(addRepBtn) addRepBtn.onclick = ()=>addOrEditRep(null);
+  document.querySelectorAll('[data-edit-rep]').forEach(b=>b.onclick=()=>addOrEditRep(b.dataset.editRep));
+  document.querySelectorAll('[data-del-rep]').forEach(b=>b.onclick=()=>{
+    if(!isAdmin()) return;
+    if(confirm('Delete this rep? Their historical production stays attached to their name on past leads/loans.')){
+      DB.reps = DB.reps.filter(r=>String(r.id)!==String(b.dataset.delRep));
+      queueSave(); toast('Rep deleted'); render();
+    }
+  });
+
+  // Super Admin tab
+  document.querySelectorAll('[data-adminsub]').forEach(b=>{
+    b.onclick = ()=>{ adminSubTab = b.dataset.adminsub; render(); };
+  });
+  document.querySelectorAll('[data-toggle-admin]').forEach(cb=>{
+    cb.onchange = ()=>{
+      const r = DB.reps.find(r=>String(r.id)===String(cb.dataset.toggleAdmin));
+      if(!r) return;
+      r.isSuperAdmin = cb.checked;
+      if(currentRep && String(currentRep.id)===String(r.id)) currentRep = r;
+      queueSave(); toast(r.isSuperAdmin ? esc(r.name)+' is now a Super Admin' : esc(r.name)+' is no longer a Super Admin'); render();
+    };
+  });
+}
+
+/* --------------------------------- reps / login ------------------------------------------- */
+
+async function ensureRepsSeeded(){
+  if(DB.reps && DB.reps.length) return;
+  DB.reps = REPS_SEED.map(r=>({ id: nextId(), createdAt: new Date().toISOString(), ...r }));
+  try{
+    for(const rep of DB.reps){ await apiUpsert('Reps', rep); }
+    lastSyncedIds.reps = new Set(DB.reps.map(r=>r.id));
+  }catch(e){
+    toast('Could not save the rep roster to Google Sheets \u2014 it will re-seed next load.', true);
+  }
+}
+
+function showLoginModal(){
+  const reps = (DB.reps||[]).slice().sort((a,b)=>a.repNumber-b.repNumber);
+  openModal('Log In \u2014 Pedison USA Platform', `
+    <p style="margin-top:0;font-size:12px;color:var(--grey);">Select your rep number and enter your PIN. This identifies who's logging calls and notes, and drives your individual KPI dashboard.</p>
+    <div class="field"><label>Rep</label><select id="login_rep">${reps.map(r=>`<option value="${r.id}">#${r.repNumber} \u2014 ${esc(r.name)}</option>`).join('')}</select></div>
+    <div class="field"><label>PIN</label><input type="text" id="login_pin" placeholder="Enter your PIN" autocomplete="off"></div>
+    <div id="login_error" style="color:var(--red);font-size:11px;display:none;">Incorrect PIN \u2014 try again.</div>
+  `, `<button class="btn" id="loginBtn">Log In</button>`, true);
+
+  document.getElementById('loginBtn').onclick = ()=>{
+    const repId = document.getElementById('login_rep').value;
+    const pin = document.getElementById('login_pin').value.trim();
+    const rep = DB.reps.find(r=>String(r.id)===String(repId));
+    if(!rep || String(rep.pin).trim() !== String(pin).trim()){
+      console.warn('Login mismatch \u2014 stored PIN for this rep (from the Sheet, as loaded):', JSON.stringify(rep ? rep.pin : undefined), 'typeof:', rep ? typeof rep.pin : 'n/a', '| you typed:', JSON.stringify(pin));
+      document.getElementById('login_error').style.display = 'block';
+      return;
+    }
+    currentRep = rep;
+    modalLocked = false;
+    closeModal();
+    render();
+  };
+  document.getElementById('login_pin').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('loginBtn').click(); });
+}
+
+function switchUser(){
+  currentRep = null;
+  showLoginModal();
+}
+
+/* --------------------------------- boot ------------------------------------------- */
+
+(async function init(){
+  await loadDB();
+  await ensureRepsSeeded();
+  render();
+  showLoginModal();
+})();
+</script>
+</body>
+</html>
